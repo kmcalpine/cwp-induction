@@ -36,7 +36,7 @@ const CREW = [
   // at work around the site
   { at: [23.2, 5.4], dir: -1, skin: SKINS[1] }, { at: [29.9, 5.45], dir: -1, skin: SKINS[2] },
   { at: [44.2, 4.2], vest: 'sub', tool: 'rake', work: true, seed: 0 }, { at: [45.6, 3], vest: 'sub', tool: 'rake', work: true, seed: 2, skin: SKINS[3] }, { at: [45, 5.6], vest: 'sub', tool: 'rake', work: true, seed: 4, skin: SKINS[2] },
-  { at: [55.2, 6.9], dir: 1, skin: SKINS[4] }, { at: [64.6, 5.6], tool: 'tablet', dir: -1 },
+  { at: [69.2, 6.9], dir: 1, skin: SKINS[4] }, { at: [78.6, 5.6], tool: 'tablet', dir: -1 },
 ];
 // chip captions [from, to, kicker, text]
 const CHIPS = [
@@ -192,8 +192,8 @@ function render(t) {
   items.push({ k: 21, s: excavator(8, excavatorPose(t), t) });
   const d = dumperAt(t); items.push({ k: d.x + 1.8 + 9.6, s: dumper(d.x, 8.7, d.dir, t, d.parked) });
   items.push({ k: 58, s: mixer(44.6, 8.75, t) });
-  const rx = 55.6 + 1.6 * Math.sin(t * .55); items.push({ k: rx + 4.9, s: roller(rx, 2.6, t) });
-  items.push({ k: 74, s: telehandler(63.4, 7.6, t) });
+  const rx = 69.6 + 1.6 * Math.sin(t * .55); items.push({ k: rx + 4.9, s: roller(rx, 2.6, t) });
+  items.push(...liftWorks(LAYOUT, t));   // the excavator lifting area
   for (const p of CREW) {
     const foreman = p.at[0] === 45 && p.at[1] === 5.6;
     items.push({ k: p.at[0] + p.at[1], s: person({ x: p.at[0], y: p.at[1], dir: foreman && t > 10 && t < 16.4 ? 1 : p.dir || 1, tool: p.tool, vest: p.vest, work: p.work && !(foreman && t > 10 && t < 16.4), seed: p.seed, skin: p.skin, raise: foreman ? ramp(t, 12.4, 12.7) * (1 - ramp(t, 13.8, 14.1)) * .7 : 0, t }) });

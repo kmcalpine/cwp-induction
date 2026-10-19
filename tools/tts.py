@@ -60,6 +60,22 @@ def resolve_model(key, wanted):
     return hits[0]["model_id"]
 
 
+def fetch(req, tries=5):
+    # retry dropped connections (flaky network); HTTP errors from ElevenLabs are raised straight away
+    for i in range(tries):
+        try:
+            with urllib.request.urlopen(req, timeout=120) as res:
+                return res.read()
+        except urllib.error.HTTPError:
+            raise
+        except (urllib.error.URLError, ConnectionError, TimeoutError, OSError) as e:
+            if i == tries - 1:
+                sys.exit(f"Couldn't reach ElevenLabs after {tries} tries: {e}")
+            wait = 2 * (i + 1)
+            print(f"  connection dropped ({e.__class__.__name__}); retrying in {wait} s")
+            time.sleep(wait)
+
+
 def synthesise(key, voice, text, prev_text, next_text):
     settings = dict(voice.get("settings", {}))
     body = {
@@ -83,8 +99,7 @@ def synthesise(key, voice, text, prev_text, next_text):
             headers={"xi-api-key": key, "Content-Type": "application/json", "Accept": "audio/mpeg"},
         )
         try:
-            with urllib.request.urlopen(req, timeout=120) as res:
-                return res.read()
+            return fetch(req)
         except urllib.error.HTTPError as e:
             detail = e.read().decode(errors="replace")[:400]
             if e.code not in (400, 422) or not fallbacks:

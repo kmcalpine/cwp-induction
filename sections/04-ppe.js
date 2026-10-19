@@ -53,7 +53,7 @@ const CREW = [
   // at work around the site
   { at: [23.2, 5.4], dir: -1, skin: SKINS[1] }, { at: [29.9, 5.45], dir: -1, skin: SKINS[2] },
   { at: [44.2, 4.2], vest: 'sub', tool: 'rake', work: true, seed: 0 }, { at: [45.6, 3], vest: 'sub', tool: 'rake', work: true, seed: 2, skin: SKINS[3] }, { at: [45, 5.6], vest: 'sub', tool: 'rake', work: true, seed: 4, skin: SKINS[2] },
-  { at: [55.2, 6.9], dir: 1, skin: SKINS[4] },
+  { at: [69.2, 6.9], dir: 1, skin: SKINS[4] },
 ];
 // chip captions [from, to, kicker, text]
 const CHIPS = [
@@ -82,8 +82,8 @@ const JOBS = [
   { at: 31.7, name: 'Hearing protection', who: { x: 31.2, y: 7.5, dir: 1, tool: 'breaker', extra: { ear: true }, skin: SKINS[1] }, head: 1.9 },
   { at: 34.7, name: 'Respiratory protection', who: { x: 41.6, y: 1.2, dir: 1, tool: 'saw', extra: { mask: true, ear: true }, skin: SKINS[0] }, head: 1.9 },
   { at: 37.9, name: 'Face protection', who: { x: 51.4, y: 4.2, dir: -1, tool: 'grinder', extra: { visor: true }, skin: SKINS[3] }, head: 1.9 },
-  { at: 40.7, name: 'Chemical-resistant clothing', who: { x: 60.6, y: .9, dir: 1, work: true, seed: 1, extra: { coverall: true, mask: true }, skin: SKINS[4] }, head: 1.9 },
-  { at: 44.1, name: 'Lifejacket', who: { x: 70.2, y: 5.9, z: 2.3, dir: 1, tool: 'tablet', extra: { life: true }, skin: SKINS[2] }, head: 4.2 },
+  { at: 40.7, name: 'Chemical-resistant clothing', who: { x: 74.6, y: .9, dir: 1, work: true, seed: 1, extra: { coverall: true, mask: true }, skin: SKINS[4] }, head: 1.9 },
+  { at: 44.1, name: 'Lifejacket', who: { x: 84.2, y: 5.9, z: 2.3, dir: 1, tool: 'tablet', extra: { life: true }, skin: SKINS[2] }, head: 4.2 },
 ];
 const CARD_AT = [49.95, 51.85, 52.95];
 const HOC_AT = 63.6, PPE_AT = 64.4, SAFE_AT = 67.4;
@@ -112,7 +112,7 @@ function brokenSlab() {
 }
 function chemDrums() {
   let s = '';
-  for (const [x, y] of [[61.35, .2], [62, .45]]) {
+  for (const [x, y] of [[75.35, .2], [76, .45]]) {
     s += cylinderV(x, y, .3, 0, .88, '#2c5d95', col('#3a6fb0'));
     const [px, py] = P(x + .21, y + .21, .5);
     s += `<path d="M${f1(px)} ${f1(py - 4)} l4 4 -4 4 -4 -4z" fill="#fff" stroke="#c8102e" stroke-width="1.2"/>`;
@@ -121,7 +121,7 @@ function chemDrums() {
 }
 function tankPlatform() {
   // access platform on the near side of the tank, with handrail
-  const x0 = 69.5, x1 = 70.9, y0 = 5.2, y1 = 6.5, z = 2.3;
+  const x0 = 83.5, x1 = 84.9, y0 = 5.2, y1 = 6.5, z = 2.3;
   let s = '';
   for (const [x, y] of [[x0, y1], [x1, y1], [x1, y0]]) s += line3([x, y, 0], [x, y, z], '#7d8287', 2.4);
   s += box(x0, y0, z - .1, x1 - x0, y1 - y0, .1, '#8b8f93');
@@ -137,8 +137,8 @@ function cameraAt(t) {
     [29.9, c(18, 6.6, 1, 900)], [31.2, c(31.8, 7.3, 1, 280)], [34, c(32, 7.3, 1, 270)],
     [34.8, c(42.2, 1, 1, 280)], [37.6, c(42.3, 1, 1, 270)],
     [38.3, c(51, 4.3, 1, 280)], [40.4, c(51, 4.3, 1, 270)],
-    [41, c(61.2, .6, 1, 280)], [43.8, c(61.3, .6, 1, 270)],
-    [44.4, c(70.2, 5.9, 3.1, 310)], [48.2, c(70.2, 5.9, 3.1, 300)],
+    [41, c(75.2, .6, 1, 280)], [43.8, c(75.3, .6, 1, 270)],
+    [44.4, c(84.2, 5.9, 3.1, 310)], [48.2, c(84.2, 5.9, 3.1, 300)],
     [49, c(30, 6, 1, 1300)], [55.4, c(31, 6, 1, 1260)],
     [55.8, c(1.6, 3.8, 1.1, 340)], [62.8, c(.8, 3, 1.1, 300)],
     [63.4, c(30, 6, 1, 1500)], [77, c(32, 6, 1, 1450)],
@@ -220,8 +220,8 @@ function render(t) {
   items.push({ k: 21, s: excavator(8, excavatorPose(t), t) });
   const d = dumperAt(t); items.push({ k: d.x + 1.8 + 9.6, s: dumper(d.x, 8.7, d.dir, t) });
   items.push({ k: 58, s: mixer(44.6, 8.75, t) });
-  const rx = 55.6 + 1.6 * Math.sin(t * .55); items.push({ k: rx + 4.9, s: roller(rx, 2.6, t) });
-  items.push({ k: 74, s: telehandler(63.4, 7.6, t) });
+  const rx = 69.6 + 1.6 * Math.sin(t * .55); items.push({ k: rx + 4.9, s: roller(rx, 2.6, t) });
+  items.push(...liftWorks(LAYOUT, t));   // the excavator lifting area
   for (const p of CREW) items.push({ k: p.at[0] + p.at[1], s: person({ x: p.at[0], y: p.at[1], dir: p.dir || 1, tool: p.tool, vest: p.vest, work: p.work, seed: p.seed, skin: p.skin, t }) });
   const cu = frac(t / 9), cx = cu < .5 ? lerp(33.4, 39.6, cu * 2) : lerp(39.6, 33.4, (cu - .5) * 2);
   items.push({ k: cx + 3.2, s: person({ x: cx, y: 3.2, moving: true, phase: t * 4.5, dir: cu < .5 ? 1 : -1, tool: 'cat', t }) });
@@ -235,8 +235,8 @@ function render(t) {
   // 3 · additional PPE, one job each
   items.push({ k: 32.4 + 7.5, bb: [31.7, 33.1, 7.05, 7.95], s: brokenSlab() });
   items.push({ k: 42.8 + 1.2, bb: [42.1, 43.5, 1.04, 1.36], s: pipeX(42.1, 43.5, 1.2, .16, .16, '#c8662a', '#e98a46') });
-  items.push({ k: 61.7 + .3, bb: [61.05, 62.3, -.1, .75], s: chemDrums() });
-  items.push({ k: 70.2 + 5.85, bb: [69.5, 70.9, 5.2, 6.5], s: tankPlatform() });
+  items.push({ k: 75.7 + .3, bb: [75.05, 76.3, -.1, .75], s: chemDrums() });
+  items.push({ k: 84.2 + 5.85, bb: [83.5, 84.9, 5.2, 6.5], s: tankPlatform() });
   for (const j of JOBS) items.push({ k: j.who.x + j.who.y + (j.who.z ? .1 : 0), s: person({ ...j.who, t }) });
   // 5 · cracked helmet: swapped by the supervisor before work starts
   if (t >= 55.4 && t < 63.4) {

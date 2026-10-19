@@ -1,6 +1,6 @@
 {
   "voice_id": "TkBXFhNSp04NiWhhR7jP",
-  "model": "v4",
+  "model": "eleven_v4",
   "settings": {
     "stability": 0.5,
     "similarity_boost": 0.75,

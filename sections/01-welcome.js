@@ -45,8 +45,8 @@ const CREW = [
   // at work around the site
   { at: [13.9, 7.4], tool: 'tablet', dir: -1 },
   { at: [23.5, 5.6], dir: -1, skin: SKINS[1] }, { at: [29.7, 5.6], dir: -1, skin: SKINS[2] },
-  { at: [65.6, 4.2], vest: 'sub', tool: 'rake', work: true, seed: 0 }, { at: [67, 3], vest: 'sub', tool: 'rake', work: true, seed: 2, skin: SKINS[3] }, { at: [66.4, 5.6], vest: 'sub', tool: 'rake', work: true, seed: 4, skin: SKINS[2] },
-  { at: [55.2, 6.9], dir: 1, skin: SKINS[4] }, { at: [77.4, 6.2], tool: 'tablet', dir: -1 },
+  { at: [71.6, 4.2], vest: 'sub', tool: 'rake', work: true, seed: 0 }, { at: [73, 3], vest: 'sub', tool: 'rake', work: true, seed: 2, skin: SKINS[3] }, { at: [72.4, 5.6], vest: 'sub', tool: 'rake', work: true, seed: 4, skin: SKINS[2] },
+  { at: [61.2, 6.9], dir: 1, skin: SKINS[4] }, { at: [83.4, 6.2], tool: 'tablet', dir: -1 },
 ];
 // each work area: camera arrives at a, its voice clip starts just after, moves on at b
 // (each hold is that clip's length plus a short beat, minimum 1.6 s)
@@ -54,13 +54,13 @@ const ZONES = [
   { name: 'Groundworks &amp; excavations', x: 13.5, y: 5.4, a: 8, b: 11.5 },
   { name: 'Drainage', x: 25.5, y: 5.2, a: 12.3, b: 13.9 },
   { name: 'Utilities', x: 36.5, y: 5.4, a: 14.7, b: 16.4 },
-  { name: 'Lifting operations', x: 46.8, y: 4.6, a: 17.2, b: 19.2 },
-  { name: 'Highways', x: 58, y: 4.8, a: 20, b: 21.6 },
-  { name: 'Concrete works', x: 68.4, y: 5.6, a: 22.4, b: 24 },
-  { name: 'Operational &amp; water-sector sites', x: 78.6, y: 4, a: 24.8, b: 29.5 },
+  { name: 'Lifting operations', x: 47.4, y: 7.6, a: 17.2, b: 19.2 },
+  { name: 'Highways', x: 64, y: 4.8, a: 20, b: 21.6 },
+  { name: 'Concrete works', x: 74.4, y: 5.6, a: 22.4, b: 24 },
+  { name: 'Operational &amp; water-sector sites', x: 84.6, y: 4, a: 24.8, b: 29.5 },
 ];
 function dumperAt(t) {
-  const a = 6, b = 40, v = 3.2, per = 2 * (b - a) / v;   // turns well before the far end of the haul road
+  const a = 6, b = 38, v = 3.2, per = 2 * (b - a) / v;   // turns well short of the lifting area
   const u = frac((t + 4) / per) * per, half = per / 2;
   return u < half ? { x: a + v * u, dir: 1 } : { x: b - v * (u - half), dir: -1 };
 }
@@ -68,8 +68,8 @@ const RISKS = [
   { name: 'Moving plant', pos: t => { const d = dumperAt(t); return [d.x + 1.8, 9.6, 2.2]; } },
   { name: 'Excavations', pos: () => [25.5, 3.9, .6] },
   { name: 'Underground services', pos: () => [36.5, 4.6, .4], left: true },  // label to the left of its marker, clear of the lifting label
-  { name: 'Lifting operations', pos: t => [45.3 + Math.sin(t * 1.1) * .08, 3.3, 2.3] },
-  { name: 'Other contractors', pos: () => [66.4, 4.3, 2.2] },
+  { name: 'Lifting operations', pos: t => { const sp = liftSpots(LAYOUT); return [lerp(sp.pick[0], sp.land[0], .5 + .5 * Math.sin(t * .35)), sp.line, 2]; } },
+  { name: 'Other contractors', pos: () => [72.4, 4.3, 2.2] },
 ];
 function cameraAt(t) {
   const f = MOBILE && focusSeq(t, 29.6, 45.4, [
@@ -80,7 +80,7 @@ function cameraAt(t) {
   const c = (x, y, z, w) => { const [px, py] = P(x, y, z); return { x: px, y: py, w }; };
   const keys = [[0, c(1.6, 12.2, 1.4, 600)], [5.8, c(1.6, 10.5, 1.2, 640)]];
   ZONES.forEach(z => { keys.push([z.a, c(z.x, z.y, 1.2, 700)], [z.b, c(z.x + .5, z.y, 1.2, 690)]); });
-  keys.push([30.1, c(37.5, 6, 1, 2330)], [44.1, c(38, 6, 1, 2270)], [45.4, c(2, 10.6, 1, 760)], [49.8, c(1.8, 11, 1, 720)],
+  keys.push([30.1, c(40.5, 6, 1, 2480)], [44.1, c(41, 6, 1, 2420)], [45.4, c(2, 10.6, 1, 760)], [49.8, c(1.8, 11, 1, 720)],
     [49.9, c(2.4, 13.8, 1.1, 480)], [54.7, c(2.4, 13.8, 1.1, 440)], [55.5, c(4, 9, 1, 900)], [72.3, c(6, 8, 1, 1000)]);
   for (let i = 0; i < keys.length - 1; i++) {
     const [t0, a] = keys[i], [t1, b] = keys[i + 1];
@@ -143,9 +143,9 @@ function render(t) {
   items.push({ k: -1.2, bb: [-5.6, -1.2, 1, 2], s: STAIR || (STAIR = stair(-5.6, -4.2, -1.2, 1, 2, 2.7)) });
   items.push({ k: 15 + 6, s: excavator(8, excavatorPose(t), t) });
   const d = dumperAt(t); items.push({ k: d.x + 1.8 + 9.6, s: dumper(d.x, 8.7, d.dir, t) });
-  items.push({ k: 70 + 10, s: mixer(66, 8.75, t) });
-  const rx = 55.6 + 1.6 * Math.sin(t * .55); items.push({ k: rx + 1.5 + 3.4, s: roller(rx, 2.6, t) });
-  items.push({ k: 50 + 3.5, s: telehandler(47.5, 2.4, t) });
+  items.push({ k: 76 + 10, s: mixer(72, 8.75, t) });
+  const rx = 61.6 + 1.6 * Math.sin(t * .55); items.push({ k: rx + 1.5 + 3.4, s: roller(rx, 2.6, t) });
+  items.push(...liftWorks(LAYOUT, t));   // the excavator lifting area
   for (const p of CREW) items.push({ k: p.at[0] + p.at[1], s: person({ x: p.at[0], y: p.at[1], dir: p.dir || 1, tool: p.tool, vest: p.vest, work: p.work, seed: p.seed, skin: p.skin, t }) });
   // CAT operator sweeping the utilities corridor
   const cu = frac(t / 9), cx = cu < .5 ? lerp(33.4, 39.6, cu * 2) : lerp(39.6, 33.4, (cu - .5) * 2);
