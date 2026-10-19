@@ -79,8 +79,8 @@ function walkerAt(t) {
   return walkPath([[31.8, 55.6, 5.1], [BENEATH_AT + .6, 54.4, 6.6], [ROUND_AT, 54.4, 6.6], [36.6, 56.2, 5]], t);
 }
 function trappedAt(t) {
-  // standing between the swinging ring and the stack of rings, then steps out
-  return walkPath([[34, 53.6, 9.15], [OUT_AT, 53.6, 9.15], [39.4, 55.4, 10.6]], t);
+  // waits at a safe spot, walks into the gap between the swinging ring and the stack, then steps back out
+  return walkPath([[0, 54.4, 11.3], [34.6, 54.4, 11.3], [35.8, 53.6, 9.15], [OUT_AT, 53.6, 9.15], [39.4, 54.4, 11.3], [61, 54.4, 11.3]], t);
 }
 function cameraAt(t) {
   const c = (x, y, z, w) => { const [px, py] = P(x, y, z); return { x: px, y: py, w }; };
@@ -172,7 +172,7 @@ function render(t) {
   const wk = walkerAt(t);
   if (wk && t < 39) items.push({ k: wk.x + wk.y, s: person({ ...wk, dir: wk.moving ? wk.dir : -1, skin: SKINS[0], t }) });
   const tp = trappedAt(t);
-  if (tp && t < 44) items.push({ k: tp.x + tp.y, s: person({ ...tp, dir: tp.moving ? tp.dir : -1, skin: SKINS[4], t }) });
+  if (tp) items.push({ k: tp.x + tp.y, s: person({ ...tp, dir: tp.moving ? tp.dir : -1, skin: SKINS[4], t }) });
   // exclusion zone barriers go up for the lift
   if (t >= ZONE_AT - .2) for (let x = 50.4; x < 56.4; x += 2) items.push({ k: x + 1 + 6, bb: [x, x + 1.96, 5.9, 6.1], s: barrier([x, 6], [x + 1.96, 6]) });
   items.push(...PROPS);
@@ -191,7 +191,7 @@ function render(t) {
   const out23 = 1 - ramp(t, 23, 23.4);
   // checklist beside the load: each line carries its own tick, first check at the top
   [['Chain sling inspected', 2.3], ['Rated for the load', 1.8], ['Checked before use', 1.3]].forEach(([n, z], i) => {
-    fx += tag(PICK[0] - 1.7, PICK[1] + .7, z, '\u2713  ' + n, '#2c9a4a', ramp(t, GEAR_AT[i], GEAR_AT[i] + .3) * out23, fs * .85);
+    fx += tag(PICK[0] - 1.05, PICK[1] + .15, z + .3, '\u2713  ' + n, '#2c9a4a', ramp(t, GEAR_AT[i], GEAR_AT[i] + .3) * out23, fs * .85);
   });
   // excavator lifting: rated machine, proper lifting point
   const out31 = 1 - ramp(t, 31.2, 31.6);
@@ -210,7 +210,7 @@ function render(t) {
     const a = 1 - ramp(t, 39, 39.4);
     fx += mark(tp ? tp.x : 53.6, tp ? tp.y : 9.15, 2.4, false, ramp(t, TRAP_AT, TRAP_AT + .3) * (1 - ramp(t, OUT_AT, OUT_AT + .3)));
     fx += tag(53.2, 9.2, .25, 'Trap point', '#e5483b', ramp(t, TRAP_AT, TRAP_AT + .3) * a);
-    fx += mark(tp ? tp.x : 55.4, tp ? tp.y : 10.6, 2.4, true, ramp(t, OUT_AT + .9, OUT_AT + 1.2) * a);
+    fx += mark(tp ? tp.x : 54.4, tp ? tp.y : 10.6, 2.4, true, ramp(t, OUT_AT + .9, OUT_AT + 1.2) * a);
   }
   // exclusion zone
   const za = ramp(t, ZONE_AT, ZONE_AT + .5) * (1 - ramp(t, 53.4, 54));
