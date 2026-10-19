@@ -1,0 +1,44 @@
+/* Mobile pages only: portrait layout and the phone frame. Loaded after base.css. */
+/* portrait screens: overlays stack and widen */
+#stage.portrait #stage, #stage.portrait > .lower { left: 4%; right: 4%; bottom: 4%; }
+#stage.portrait > .lower { flex-direction: column; }
+#stage.portrait > .lower .logo { justify-content: center; padding: .6em; }
+#stage.portrait > .lower .logo img { height: 3.4em; }
+#stage.portrait .lower .h { font-size: 2.4em; }
+#stage.portrait .lower .s { font-size: 1.3em; }
+#stage.portrait #chip { left: 4%; right: 4%; bottom: 4%; }
+#stage.portrait #chip .h { font-size: 2em; }
+#stage.portrait #riskTitle { left: 4%; right: 4%; top: 4%; font-size: 1.7em; }
+#stage.portrait #banner { bottom: 6%; }
+#stage.portrait #banner div { font-size: 2.1em; max-width: 92%; }
+#stage.portrait #cards { flex-direction: column; gap: 1.2em; }
+#stage.portrait .card { max-width: 88%; width: 88%; flex: none; }
+#stage.portrait .card .top { padding: .7em 0; }
+#stage.portrait .card .ic { width: 4.6em; height: 4.6em; }
+#stage.portrait .card .a { font-size: 2.4em; }
+#stage.portrait #tiles .row { flex-wrap: wrap; justify-content: center; gap: 1.2em; max-width: 92%; }
+#stage.portrait #tiles .tile { width: 42%; }
+#stage.portrait #tiles .ic { width: 5.4em; height: 5.4em; }
+#stage.portrait #tiles .verdict { font-size: 2.2em; }
+#stage.portrait #quote { padding: 0 5%; }
+#stage.portrait #quote p { font-size: 2.3em; }
+#stage.portrait #quote .q { padding: 2em 1.6em 1.8em 3.6em; }
+#stage.portrait #contact .cc { width: 90%; }
+#stage.portrait #end img { width: 70%; }
+#stage.portrait #end p { font-size: 2.2em; text-align: center; padding: 0 6%; }
+#stage.portrait #start img { width: 62%; }
+#stage.portrait #start h1 { font-size: 2.8em; padding: 0 5%; }
+#stage.portrait #start .fields { flex-direction: column; }
+@media (max-width: 600px) {
+  #controls { gap: 8px; padding: 10px 10px 12px; font-size: 12px; }
+  #controls button { padding: 6px 8px; min-width: 34px; }
+  #cPhone, #cFull, #time { display: none; }
+}
+/* phone preview: the stage is fitted to an iPhone-sized screen inside a bezel */
+#phone { position: fixed; display: none; border: 14px solid #0d0e10; border-radius: 48px; background: #000; box-shadow: 0 0 0 2px #3a3d42, 0 24px 70px rgba(0,0,0,.6); box-sizing: content-box; }
+#phone::after { content: ''; position: absolute; background: #0d0e10; border-radius: 20px; }
+#phone.portrait::after { top: 10px; left: 50%; width: 30%; height: 24px; transform: translateX(-50%); }
+#phone.landscape::after { left: 10px; top: 50%; height: 30%; width: 24px; transform: translateY(-50%); }
+#phoneLabel { position: fixed; left: 0; right: 0; top: 14px; text-align: center; font: 13px system-ui, sans-serif; color: #c9ccd0; display: none; }
+body.phone { background: #26292d; }
+body.phone #phone, body.phone #phoneLabel { display: block; }

@@ -1,0 +1,12 @@
+{
+  "out": "audio-3",
+  "lines": [
+    {"file": "01.mp3", "text": "Only use the designated site entrances, access routes, and pedestrian walkways."},
+    {"file": "02.mp3", "text": "Don't enter restricted areas, or another contractor's work area, without permission."},
+    {"file": "03.mp3", "text": "Keep your work area tidy, and never let materials, tools, or waste block an access route."},
+    {"file": "04.mp3", "text": "Don't use your mobile phone while operating plant, or doing any safety-critical task."},
+    {"file": "05.mp3", "text": "Horseplay, fighting, bullying, or working under the influence of alcohol or drugs, will not be tolerated."},
+    {"file": "06.mp3", "text": "Treat everyone with respect: colleagues, subcontractors, clients, and members of the public."},
+    {"file": "07.mp3", "text": "Respect the site, and everyone on it."}
+  ]
+}

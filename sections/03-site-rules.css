@@ -1,0 +1,11 @@
+/* 03-site-rules: styling for this section's own cards. */
+#tiles { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2.2em; pointer-events: none; }
+#tiles .row { display: flex; gap: 2.2em; }
+#tiles .tile { width: 15em; background: #fff; color: var(--ink); border-radius: .4em; padding: 1.6em 1em 1.3em; text-align: center; opacity: 0; transform: translateY(1em); box-shadow: 0 1em 2.2em rgba(0,0,0,.45); }
+#tiles .ic { position: relative; width: 8em; height: 8em; margin: 0 auto .9em; }
+#tiles .ic svg { width: 100%; height: 100%; }
+#tiles .ic .no { position: absolute; inset: 0; }
+#tiles .ic .no circle, #tiles .ic .no line { stroke: #e5483b; stroke-width: 7; fill: none; }
+#tiles .ic .no line { stroke-dasharray: 100; stroke-dashoffset: 100; }
+#tiles .lbl { font-size: 1.9em; font-weight: 700; text-transform: uppercase; letter-spacing: .03em; }
+#tiles .verdict { background: #e5483b; color: #fff; font-size: 3em; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; padding: .3em 1em; opacity: 0; transform: scale(.9); }

@@ -1,0 +1,57 @@
+/* Shared styling for every section (desktop and mobile). */
+:root { --blue: #1d9ad6; --ink: #231f20; --grey: #58595b; --lgrey: #939598; }
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; background: #000; overflow: hidden; font-family: "Arial Narrow", "Helvetica Neue", Arial, sans-serif; color: #fff; }
+#stage { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); overflow: hidden; background: #2a2c2f; }
+#stage > * { position: absolute; inset: 0; width: 100%; height: 100%; }
+#iso { display: block; }
+#tint { pointer-events: none; mix-blend-mode: soft-light; opacity: 0; }
+#dusk { pointer-events: none; mix-blend-mode: multiply; opacity: 0; background: linear-gradient(180deg, #8a6fb0, #f0a060); }
+#vig { pointer-events: none; background: radial-gradient(ellipse at 50% 46%, rgba(0,0,0,0) 58%, rgba(0,0,0,.42) 100%); }
+#grain { pointer-events: none; opacity: .045; mix-blend-mode: overlay; }
+#dim { pointer-events: none; background: rgba(14,18,22,.72); opacity: 0; }
+#stage > .lower { inset: auto; left: 4%; bottom: 7%; width: auto; height: auto; display: flex; align-items: stretch; opacity: 0; pointer-events: none; box-shadow: 0 .6em 1.8em rgba(0,0,0,.35); }
+.lower .logo { background: #fff; padding: .9em 1.2em; display: flex; align-items: center; }
+.lower .logo img { height: 4.6em; display: block; }
+.lower .txt { background: rgba(35,31,32,.92); border-left: .45em solid var(--blue); padding: .8em 1.4em; display: flex; flex-direction: column; justify-content: center; }
+.lower .k { font-size: 1.3em; letter-spacing: .14em; color: var(--blue); font-weight: 700; text-transform: uppercase; }
+.lower .h { font-size: 3.2em; font-weight: 700; text-transform: uppercase; letter-spacing: .02em; line-height: 1.05; }
+.lower .s { font-size: 1.45em; opacity: .85; margin-top: .3em; max-width: 34em; }
+#chip { inset: auto; left: 4%; bottom: 7%; width: auto; height: auto; opacity: 0; pointer-events: none; }
+#chip .k { display: inline-block; background: var(--blue); color: #fff; font-weight: 700; letter-spacing: .14em; font-size: 1.2em; padding: .35em .8em; text-transform: uppercase; }
+#chip .h { background: rgba(35,31,32,.9); font-size: 2.6em; font-weight: 700; text-transform: uppercase; padding: .35em .7em; letter-spacing: .03em; }
+#riskTitle { inset: auto; left: 4%; top: 6%; width: auto; height: auto; opacity: 0; pointer-events: none; background: rgba(35,31,32,.9); border-left: .45em solid #e5483b; padding: .6em 1.1em; font-size: 2.3em; font-weight: 700; text-transform: uppercase; letter-spacing: .03em; }
+#banner { inset: auto; left: 0; right: 0; bottom: 9%; width: auto; height: auto; text-align: center; opacity: 0; pointer-events: none; }
+#banner div { display: inline-block; background: rgba(35,31,32,.9); border-bottom: .3em solid var(--blue); padding: .55em 1.2em; font-size: 2.9em; font-weight: 700; letter-spacing: .02em; text-transform: uppercase; max-width: 86%; }
+#banner small { display: block; font-size: .5em; letter-spacing: .14em; color: var(--blue); margin-bottom: .2em; }
+#cards { display: flex; align-items: center; justify-content: center; gap: 2.4%; padding: 0 5%; pointer-events: none; }
+.card { flex: 1; max-width: 30%; background: #fff; color: var(--ink); border-radius: .4em; overflow: hidden; opacity: 0; transform: translateY(1.2em); box-shadow: 0 1em 2.4em rgba(0,0,0,.45); }
+.card .top { background: var(--ink); display: flex; align-items: center; justify-content: center; padding: 1.6em 0; }
+.card .ic { width: 7.4em; height: 7.4em; border-radius: 50%; background: var(--blue); display: flex; align-items: center; justify-content: center; }
+.card.stop .ic { background: #e5483b; }
+.card .ic svg { width: 62%; height: 62%; }
+.card .body { padding: 1.3em 1.4em 1.6em; border-top: .35em solid var(--blue); }
+.card.stop .body { border-top-color: #e5483b; }
+.card .q { font-size: 1.7em; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--grey); }
+.card .a { font-size: 3.2em; font-weight: 700; text-transform: uppercase; line-height: 1.02; margin-top: .15em; }
+.card .n { font-size: 1.35em; margin-top: .55em; color: #444; }
+#end { background: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1.6em; opacity: 0; pointer-events: none; color: var(--ink); }
+#end img { width: 34%; display: block; }
+#end .line { width: 0; height: .35em; background: var(--blue); }
+#end p { margin: 0; font-size: 3em; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; opacity: 0; }
+#end small { font-size: 1.4em; letter-spacing: .2em; color: var(--grey); text-transform: uppercase; opacity: 0; }
+#black { background: #000; opacity: 1; pointer-events: none; }
+#start { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1.2em; background: #fff; color: var(--ink); text-align: center; z-index: 5; }
+#start img { width: 30%; }
+#start .k { font-size: 1.5em; letter-spacing: .2em; color: var(--blue); font-weight: 700; text-transform: uppercase; }
+#start h1 { margin: 0; font-size: 4.2em; text-transform: uppercase; letter-spacing: .03em; }
+#start .hint { font-size: 1.15em; color: var(--grey); }
+#start button, #replay { font: inherit; font-size: 1.9em; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #fff; background: var(--blue); border: 0; padding: .55em 1.6em; cursor: pointer; border-radius: .15em; }
+#replay { inset: auto; width: auto; height: auto; right: 4%; bottom: 7%; display: none; z-index: 4; font-size: 1.4em; }
+#controls { position: fixed; left: 0; right: 0; bottom: 0; padding: 14px 18px 16px; display: flex; align-items: center; gap: 14px; background: linear-gradient(transparent, rgba(0,0,0,.75)); opacity: 0; transition: opacity .3s; z-index: 10; font-family: system-ui, sans-serif; font-size: 14px; }
+#controls.show { opacity: 1; }
+#controls button { background: rgba(255,255,255,.12); color: #fff; border: 0; border-radius: 4px; padding: 6px 12px; font: inherit; cursor: pointer; min-width: 44px; }
+#controls button:hover { background: rgba(255,255,255,.22); }
+#bar { flex: 1; height: 6px; background: rgba(255,255,255,.2); border-radius: 3px; cursor: pointer; position: relative; }
+#bar i { position: absolute; left: 0; top: 0; bottom: 0; background: var(--blue); border-radius: 3px; }
+#time { font-variant-numeric: tabular-nums; opacity: .8; min-width: 82px; text-align: right; }

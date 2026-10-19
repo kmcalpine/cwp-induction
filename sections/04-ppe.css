@@ -1,0 +1,13 @@
+/* 04-ppe: the hierarchy-of-control panel. */
+#hoc { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .55em; pointer-events: none; opacity: 0; }
+#hoc .ttl { font-size: 1.6em; letter-spacing: .16em; text-transform: uppercase; color: #fff; font-weight: 700; margin-bottom: .4em; }
+#hoc .row { background: #fff; color: var(--ink); font-size: 2.3em; font-weight: 700; text-transform: uppercase; letter-spacing: .03em; text-align: center; padding: .45em 0; border-radius: .15em; opacity: 0; transition: background .4s, color .4s; }
+#hoc .r0 { width: 58%; } #hoc .r1 { width: 50%; } #hoc .r2 { width: 42%; } #hoc .r3 { width: 34%; } #hoc .r4 { width: 26%; }
+#hoc .row.safe { background: #2c9a4a; color: #fff; }
+#hoc .ppe { background: #d9d9d4; }
+#hoc .ppe.on { background: #e5483b; color: #fff; }
+#hoc .ppe span { display: block; font-size: .45em; letter-spacing: .14em; margin-top: .15em; }
+#hoc .sub { margin-top: .6em; font-size: 2em; font-weight: 700; color: #fff; text-transform: uppercase; letter-spacing: .04em; opacity: 0; }
+#stage.portrait #hoc .row { font-size: 1.6em; }
+#stage.portrait #hoc .r0 { width: 88%; } #stage.portrait #hoc .r1 { width: 78%; } #stage.portrait #hoc .r2 { width: 68%; } #stage.portrait #hoc .r3 { width: 58%; } #stage.portrait #hoc .r4 { width: 48%; }
+#stage.portrait #hoc .sub { font-size: 1.4em; text-align: center; padding: 0 6%; }

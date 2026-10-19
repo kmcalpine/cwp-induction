@@ -1,0 +1,37 @@
+/* 05-rams: the RAMS document panel and the signature card. */
+#rams { inset: auto; left: auto; right: 3%; top: 5%; width: 40%; height: auto; opacity: 0; pointer-events: none; }
+#rams .doc { background: #fff; color: var(--ink); border-radius: .35em; padding: 1.1em 1.3em 1.2em; box-shadow: 0 1em 2.4em rgba(0,0,0,.45); font-size: 1.05em; }
+#rams .hd { display: flex; align-items: center; gap: .9em; border-bottom: .2em solid var(--blue); padding-bottom: .7em; margin-bottom: .6em; }
+#rams .hd img { height: 2.6em; }
+#rams .hd b { display: block; font-size: 1.35em; text-transform: uppercase; letter-spacing: .02em; }
+#rams .hd span { font-size: 1.05em; color: var(--grey); }
+#rams .sec { border-left: .3em solid transparent; padding: .35em .7em; margin: .25em 0; transition: opacity .3s, background .3s, border-color .3s; }
+#rams .sec h5 { margin: 0 0 .2em; font-size: 1.15em; text-transform: uppercase; letter-spacing: .06em; }
+#rams .sec ol, #rams .sec ul { margin: 0; padding-left: 1.4em; font-size: 1em; line-height: 1.35; }
+#rams .s1 h5 { color: #c8302a; } #rams .s2 h5 { color: #1d7a3e; } #rams .s0 h5 { color: var(--blue); }
+#rams .sec.on { background: #eef6fc; border-color: var(--blue); }
+#rams .sec.off { opacity: .3; }
+#rams .sign { margin-top: .6em; border-top: .1em solid #ddd; padding-top: .5em; opacity: .35; transition: opacity .3s; }
+#rams .sign.on { opacity: 1; }
+#rams .sign h5 { margin: 0 0 .3em; font-size: 1.1em; text-transform: uppercase; letter-spacing: .06em; }
+#rams .sign .row { display: flex; align-items: center; gap: .8em; height: 2.1em; border-bottom: .08em solid #e4e4e4; font-size: 1.05em; }
+#rams .sign .row span { width: 7em; }
+#rams .sign .row svg { height: 2em; width: 8em; }
+#rams .sign .row svg .pen { stroke-dasharray: 100; stroke-dashoffset: 100; }
+#rams .sign .row i { margin-left: auto; width: 1.4em; height: 1.4em; border-radius: 50%; background: #ddd; position: relative; }
+#rams .sign .row.ok i { background: #2c9a4a; }
+#rams .sign .row.ok i::after { content: ''; position: absolute; left: .45em; top: .2em; width: .35em; height: .7em; border: solid #fff; border-width: 0 .18em .18em 0; transform: rotate(45deg); }
+#rams .sign .row.you span { font-weight: 700; color: var(--blue); }
+#sig { display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; }
+#sig .sigcard { background: #fff; color: var(--ink); border-radius: .4em; border-left: .6em solid var(--blue); padding: 2em 3em; text-align: center; box-shadow: 0 1em 2.4em rgba(0,0,0,.45); max-width: 70%; }
+#sig .k { font-size: 1.6em; letter-spacing: .14em; color: var(--grey); text-transform: uppercase; font-weight: 700; }
+#sig .a { margin: .2em 0 .4em; font-size: 3.2em; font-weight: 700; }
+#sig svg { width: 22em; height: 6em; display: block; margin: 0 auto; border-bottom: .12em solid #bbb; }
+#sig svg .pen { stroke-dasharray: 100; stroke-dashoffset: 100; }
+#sig .b { margin: .6em 0 0; font-size: 2.4em; font-weight: 700; color: var(--blue); opacity: 0; }
+#stage.portrait #rams { left: 4%; right: 4%; top: 3%; width: auto; }
+#stage.portrait #rams .doc { font-size: 1.45em; padding: .9em 1em 1em; }
+#stage.portrait #sig .sigcard { max-width: 92%; padding: 1.6em 1.4em; font-size: 1.5em; }
+#stage.portrait #sig .a { font-size: 2.3em; }
+#stage.portrait #sig svg { width: 16em; }
+#stage.portrait #sig .b { font-size: 1.7em; }
