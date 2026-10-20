@@ -179,8 +179,10 @@ function render(t) {
     const [px, py] = P(...r.pos(t)), pulse = frac(t * 1.2 + i * .2);
     const lw = textW(r.name.toUpperCase(), fs * 1.05, fs * .05) + fs * 1.4, lx = keepIn(px - (r.left ? lw / 2 + fs * 1.6 : 0), lw, fs * .4), ly = r.left ? 3.2 : 0;
     if (!inShot(px, py)) return;
-    fx += `<g opacity="${f2(a)}"><circle cx="${f1(px)}" cy="${f1(py)}" r="${f1(fs * (1.6 + pulse * 3.5))}" fill="none" stroke="#e5483b" stroke-width="${f2(fs * .25)}" opacity="${f2(1 - pulse)}"/>` +
-      `<circle cx="${f1(px)}" cy="${f1(py)}" r="${f1(fs * .9)}" fill="#e5483b" stroke="#fff" stroke-width="${f2(fs * .2)}"/>` +
+    // the red marker only flags the hazard as it's named, then fades; the label stays
+    const ra = 1 - ramp(t, RISK_AT[i] + 2, RISK_AT[i] + 2.5);
+    fx += `<g opacity="${f2(a)}">` + (ra > 0 ? `<g opacity="${f2(ra)}"><circle cx="${f1(px)}" cy="${f1(py)}" r="${f1(fs * (1.6 + pulse * 3.5))}" fill="none" stroke="#e5483b" stroke-width="${f2(fs * .25)}" opacity="${f2(1 - pulse)}"/>` +
+      `<circle cx="${f1(px)}" cy="${f1(py)}" r="${f1(fs * .9)}" fill="#e5483b" stroke="#fff" stroke-width="${f2(fs * .2)}"/></g>` : '') +
       `<rect x="${f1(lx - lw / 2)}" y="${f1(py - fs * (4.1 - ly))}" width="${f1(lw)}" height="${f1(fs * 1.9)}" rx="${f1(fs * .3)}" fill="rgba(35,31,32,.92)"/>` +
       `<text x="${f1(lx)}" y="${f1(py - fs * (2.75 - ly))}" fill="#fff" font-family="Arial Narrow, Arial, sans-serif" font-weight="700" font-size="${f1(fs * 1.05)}" text-anchor="middle" letter-spacing="${f2(fs * .05)}">${r.name.toUpperCase()}</text></g>`;
   });
