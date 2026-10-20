@@ -173,11 +173,20 @@ function render(t) {
   // risk markers + role tags
   let fx = '';
   const fs = labelSize();
+  // the risks banner's box in scene units, so a label never sits under it
+  let ban = null;
+  if (t > 29.8 && t < 44.6) {
+    const sr = stage.getBoundingClientRect(), br = $('riskTitle').getBoundingClientRect(), vh = VIEW_B - VIEW_T;
+    ban = { l: VIEW_L + (br.left - sr.left) / sr.width * VIEW_W, r: VIEW_L + (br.right - sr.left) / sr.width * VIEW_W, b: VIEW_T + (br.bottom - sr.top) / sr.height * vh };
+  }
   if (t > 29.8 && t < 44.6) RISKS.forEach((r, i) => {
     const a = ramp(t, RISK_AT[i], RISK_AT[i] + .35) * (1 - ramp(t, 44, 44.5));
     if (a <= 0) return;
     const [px, py] = P(...r.pos(t)), pulse = frac(t * 1.2 + i * .2);
-    const lw = textW(r.name.toUpperCase(), fs * 1.05, fs * .05) + fs * 1.4, lx = keepIn(px - (r.left ? lw / 2 + fs * 1.6 : 0), lw, fs * .4), ly = r.left ? 3.2 : 0;
+    const lw = textW(r.name.toUpperCase(), fs * 1.05, fs * .05) + fs * 1.4, lx = keepIn(px - (r.left ? lw / 2 + fs * 1.6 : 0), lw, fs * .4);
+    let ly = r.left ? 3.2 : 0;
+    // would sit under the banner: put it below the marker instead
+    if (py - fs * (4.1 - ly) < ban.b + fs * .4 && lx + lw / 2 > ban.l && lx - lw / 2 < ban.r) ly = 5.7;
     if (!inShot(px, py)) return;
     // the red marker only flags the hazard as it's named, then fades; the label stays
     const ra = 1 - ramp(t, RISK_AT[i] + 2, RISK_AT[i] + 2.5);
