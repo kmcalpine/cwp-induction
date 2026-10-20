@@ -1,0 +1,14 @@
+{
+  "out": "audio-12",
+  "lines": [
+    {"file": "01.mp3", "text": "Fire, and emergency arrangements."},
+    {"file": "02.mp3", "text": "If you discover a fire, raise the alarm immediately, and follow the site emergency arrangements."},
+    {"file": "03.mp3", "text": "Only attempt to tackle a fire if you are trained, it is safe to do so, and you have a clear escape route."},
+    {"file": "04.mp3", "text": "Make yourself familiar with the emergency exits, the assembly point, and the location of fire-fighting equipment."},
+    {"file": "05.mp3", "text": "Hot works require the appropriate authorisation and controls."},
+    {"file": "06.mp3", "text": "In the event of a serious accident, contact the emergency services where necessary, and notify site management."},
+    {"file": "07.mp3", "text": "Do not move an injured person unless they are in immediate danger."},
+    {"file": "08.mp3", "text": "You must know who the first aiders are, and where the first aid equipment is located."},
+    {"file": "09.mp3", "text": "Raise the alarm. Know your way out. Know who can help."}
+  ]
+}

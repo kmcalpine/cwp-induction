@@ -1,0 +1,15 @@
+/* 13-incidents: what must be reported. */
+#rpcard { inset: auto; left: auto; right: 4%; top: 8%; width: 34%; height: auto; opacity: 0; pointer-events: none; }
+#rpcard .oc { background: #fff; color: var(--ink); border-radius: .45em; overflow: hidden; box-shadow: 0 1em 2.4em rgba(0,0,0,.5); }
+#rpcard .hd { background: var(--ink); display: flex; align-items: center; gap: 1em; padding: .8em 1.2em; border-bottom: .3em solid var(--blue); }
+#rpcard .hd img { height: 2.8em; background: #fff; padding: .3em .5em; border-radius: .2em; }
+#rpcard .hd span { color: #fff; font-size: 1.9em; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; line-height: 1.1; }
+#rpcard .row { display: grid; grid-template-columns: 1fr auto; align-items: center; padding: .55em 1.2em; border-bottom: .08em solid #e4e4e4; opacity: .35; transition: opacity .3s; }
+#rpcard .row.ok { opacity: 1; }
+#rpcard .row b { font-size: 1.8em; text-transform: uppercase; }
+#rpcard .row i { width: 2.2em; height: 2.2em; border-radius: 50%; background: #ddd; position: relative; }
+#rpcard .row.ok i { background: #2c9a4a; }
+#rpcard .row.ok i::after { content: ''; position: absolute; left: .75em; top: .35em; width: .55em; height: 1.1em; border: solid #fff; border-width: 0 .25em .25em 0; transform: rotate(45deg); }
+#rpcard .ft { background: #e07a1a; color: #fff; font-size: 1.6em; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; text-align: center; padding: .5em; opacity: 0; transition: opacity .3s; }
+#rpcard .ft.ok { opacity: 1; }
+#stage.portrait #rpcard { left: 5%; right: 5%; top: 4%; width: auto; font-size: 1.3em; }

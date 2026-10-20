@@ -1,0 +1,14 @@
+{
+  "out": "audio-11",
+  "lines": [
+    {"file": "01.mp3", "text": "Environmental protection."},
+    {"file": "02.mp3", "text": "CWP works in environments where pollution can have serious consequences, particularly on water-sector projects, and near rivers, drains, and watercourses."},
+    {"file": "03.mp3", "text": "Fuel, oils, chemicals, and other hazardous substances must be stored and handled correctly."},
+    {"file": "04.mp3", "text": "Spill kits must be available where required, and any spill must be reported immediately."},
+    {"file": "05.mp3", "text": "Never wash concrete, cement slurry, chemicals, or contaminated water into drains, or onto unprotected ground."},
+    {"file": "06.mp3", "text": "Waste must be segregated, and disposed of through approved arrangements."},
+    {"file": "07.mp3", "text": "Noise, dust, mud on roads, and unnecessary disturbance must be controlled."},
+    {"file": "08.mp3", "text": "Environmental incidents and near misses are to be reported in the same way as safety incidents."},
+    {"file": "09.mp3", "text": "Store it right. Keep it out of the water. Report every spill."}
+  ]
+}

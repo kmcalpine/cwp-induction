@@ -1,0 +1,2 @@
+/* 12-fire-emergency: the closing line is long, so it centres and wraps inside the card. */
+#end p { text-align: center; padding: 0 8%; }

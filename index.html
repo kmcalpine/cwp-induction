@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CWP New Starter Induction</title>
+<style>
+  :root { --blue: #1d9ad6; --ink: #231f20; --grey: #58595b; --line: #e4e4e4; --bg: #f4f4f2; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font-family: "Arial Narrow", "Helvetica Neue", Arial, sans-serif; }
+  header { background: var(--ink); color: #fff; border-bottom: .35rem solid var(--blue); }
+  .wrap { max-width: 860px; margin: 0 auto; padding: 0 16px; }
+  header .wrap { display: flex; align-items: center; gap: 20px; padding-top: 22px; padding-bottom: 22px; }
+  header img { height: 52px; background: #fff; padding: 6px 10px; border-radius: 4px; }
+  header .k { font-size: .8rem; letter-spacing: .14em; text-transform: uppercase; color: var(--blue); font-weight: 700; }
+  header h1 { margin: 2px 0 0; font-size: 1.7rem; text-transform: uppercase; letter-spacing: .02em; }
+  main { padding: 24px 0 48px; }
+  .intro { color: var(--grey); margin: 0 0 18px; line-height: 1.45; }
+  ol { list-style: none; margin: 0; padding: 0; background: #fff; border-radius: 6px; box-shadow: 0 1px 3px rgba(0,0,0,.08); overflow: hidden; }
+  li { display: grid; grid-template-columns: 2.6rem 1fr auto; align-items: center; gap: 12px; padding: 14px 16px; border-bottom: 1px solid var(--line); }
+  li:last-child { border-bottom: 0; }
+  .n { font-weight: 700; font-size: 1.3rem; color: var(--blue); text-align: center; }
+  .t { font-weight: 700; font-size: 1.1rem; text-transform: uppercase; letter-spacing: .02em; }
+  .links { display: flex; gap: 8px; }
+  a.b { display: inline-block; padding: 8px 12px; border-radius: 4px; font-weight: 700; font-size: .85rem; text-transform: uppercase; letter-spacing: .04em; text-decoration: none; border: 2px solid var(--blue); color: var(--blue); white-space: nowrap; }
+  a.b.main { background: var(--blue); color: #fff; }
+  a.b:focus-visible, a.b:hover { background: var(--ink); border-color: var(--ink); color: #fff; }
+  footer { color: var(--grey); font-size: .85rem; text-align: center; padding-bottom: 32px; }
+  @media (max-width: 560px) {
+    header h1 { font-size: 1.3rem; }
+    header img { height: 40px; }
+    li { grid-template-columns: 2rem 1fr; }
+    .links { grid-column: 2; }
+  }
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <img src="cwp-logo.png" alt="CWP">
+  <div><div class="k">CWP Construction Ltd</div><h1>New starter induction</h1></div>
+</div></header>
+<main class="wrap">
+  <p class="intro">Fifteen short films, one for each part of the site induction. Watch them in order, with sound on. Each film is about a minute long.</p>
+  <ol id="list"></ol>
+</main>
+<footer>CWP Construction Ltd &middot; New starter induction</footer>
+<script>
+  const SECTIONS = [
+    ['01-welcome', 'Welcome &amp; introduction'],
+    ['02-site-management', 'Site management &amp; reporting'],
+    ['03-site-rules', 'Site access &amp; general rules'],
+    ['04-ppe', 'Personal protective equipment'],
+    ['05-rams', 'RAMS &amp; safe systems of work'],
+    ['06-plant', 'Plant, vehicles &amp; pedestrian safety'],
+    ['07-excavations', 'Excavations &amp; underground services'],
+    ['08-lifting', 'Lifting operations'],
+    ['09-height-confined', 'Working at height &amp; confined spaces'],
+    ['10-health-hazards', 'Dust, noise, vibration &amp; hazardous substances'],
+    ['11-environment', 'Environmental protection'],
+    ['12-fire-emergency', 'Fire &amp; emergency arrangements'],
+    ['13-incidents', 'Accidents, near misses &amp; unsafe conditions'],
+    ['14-welfare', 'Welfare, housekeeping &amp; behaviour'],
+    ['15-final-message', 'Final message'],
+  ];
+  // on a phone, the mobile version is the main button
+  const phone = matchMedia('(max-width: 760px) and (orientation: portrait)').matches;
+  document.getElementById('list').innerHTML = SECTIONS.map(([f, t], i) => {
+    const d = `<a class="b${phone ? '' : ' main'}" href="${f}.html">Desktop</a>`, m = `<a class="b${phone ? ' main' : ''}" href="${f}-mobile.html">Mobile</a>`;
+    return `<li><span class="n">${i + 1}</span><span class="t">${t}</span><span class="links">${phone ? m + d : d + m}</span></li>`;
+  }).join('');
+</script>
+</body>
+</html>

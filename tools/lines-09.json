@@ -1,21 +1,73 @@
 {
   "out": "audio-9",
   "lines": [
-    {"file": "01.mp3", "text": "Working at height, and confined spaces."},
-    {"file": "02.mp3", "text": "Work at height must be properly planned, with the right access equipment, and protection against falls."},
-    {"file": "03.mp3", "text": "Never use damaged ladders,"},
-    {"file": "04.mp3", "text": "towers,"},
-    {"file": "05.mp3", "text": "or scaffolds."},
-    {"file": "06.mp3", "text": "And never remove edge protection, or alter scaffolding, without authorisation."},
-    {"file": "07.mp3", "text": "Confined spaces, like manholes, chambers, tanks, and wet wells, can kill."},
-    {"file": "08.mp3", "text": "No one enters a confined space without the assessment,"},
-    {"file": "09.mp3", "text": "authorisation,"},
-    {"file": "10.mp3", "text": "competent people,"},
-    {"file": "11.mp3", "text": "gas monitoring,"},
-    {"file": "12.mp3", "text": "isolation,"},
-    {"file": "13.mp3", "text": "and a rescue plan in place."},
-    {"file": "14.mp3", "text": "Rescue must be planned before anyone goes in."},
-    {"file": "15.mp3", "text": "If someone collapses, never go in after them. Raise the alarm, and follow the rescue plan."},
-    {"file": "16.mp3", "text": "Plan the work. Protect the edge. Never enter unprepared."}
+    {
+      "file": "01.mp3",
+      "text": "Working at height, and confined spaces."
+    },
+    {
+      "file": "02.mp3",
+      "text": "Work at height must be properly planned, with the right access equipment, and protection against falls."
+    },
+    {
+      "file": "03.mp3",
+      "text": "Never use damaged ladders,"
+    },
+    {
+      "file": "04.mp3",
+      "text": "towers,"
+    },
+    {
+      "file": "05.mp3",
+      "text": "or scaffolds."
+    },
+    {
+      "file": "06.mp3",
+      "text": "And never remove edge protection, or alter scaffolding, without authorisation."
+    },
+    {
+      "file": "07.mp3",
+      "text": "Confined spaces, like manholes, chambers, tanks, and wet wells, can kill."
+    },
+    {
+      "file": "08.mp3",
+      "text": "No one enters a confined space without the assessment,"
+    },
+    {
+      "file": "09.mp3",
+      "text": "authorisation,"
+    },
+    {
+      "file": "10.mp3",
+      "text": "competent people,"
+    },
+    {
+      "file": "11.mp3",
+      "text": "gas monitoring,"
+    },
+    {
+      "file": "12.mp3",
+      "text": "isolation,"
+    },
+    {
+      "file": "13.mp3",
+      "text": "and a rescue plan in place."
+    },
+    {
+      "file": "14.mp3",
+      "text": "Rescue must be planned before anyone goes in."
+    },
+    {
+      "file": "15.mp3",
+      "text": "If someone collapses, never go in after them. Raise the alarm, and follow the rescue plan."
+    },
+    {
+      "file": "16.mp3",
+      "text": "Plan the work. Protect the edge. Never enter unprepared."
+    },
+    {
+      "file": "17.mp3",
+      "text": "Never use damaged ladders, towers, or scaffolds."
+    }
   ]
 }

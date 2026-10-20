@@ -1,0 +1,32 @@
+/* 15-final-message: the "nothing is more important" card, the job-done checklist, the end card's question. */
+#weigh { inset: auto; left: 0; right: 0; top: 9%; width: auto; height: auto; text-align: center; opacity: 0; pointer-events: none; }
+#weigh .wc { display: inline-block; background: rgba(35,31,32,.92); border-bottom: .3em solid var(--blue); padding: 1em 1.6em 1.1em; max-width: 86%; }
+#weigh .ws { display: flex; justify-content: center; gap: 1.4em; }
+#weigh .ws span { position: relative; font-size: 2.6em; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; color: #fff; opacity: 0; }
+#weigh .ws span::after { content: ''; position: absolute; left: -.15em; right: -.15em; top: 52%; height: .12em; background: #e5483b; transform: scaleX(0); transform-origin: left; transition: transform .35s; }
+#weigh .ws span.x { color: #9a9a9a; }
+#weigh .ws span.x::after { transform: scaleX(1); }
+#weigh .wl { margin-top: .5em; font-size: 2.2em; font-weight: 700; text-transform: uppercase; letter-spacing: .02em; opacity: 0; }
+#weigh .wl b { color: #6fd08a; }
+#ticks { inset: auto; left: auto; right: 4%; top: 8%; width: 36%; height: auto; opacity: 0; pointer-events: none; }
+#ticks .oc { background: #fff; color: var(--ink); border-radius: .45em; overflow: hidden; box-shadow: 0 1em 2.4em rgba(0,0,0,.5); }
+#ticks .hd { background: var(--ink); display: flex; align-items: center; gap: 1em; padding: .8em 1.2em; border-bottom: .3em solid var(--blue); }
+#ticks .hd img { height: 2.8em; background: #fff; padding: .3em .5em; border-radius: .2em; }
+#ticks .hd span { color: #fff; font-size: 2.1em; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; }
+#ticks .row { display: grid; grid-template-columns: 1fr auto; padding: .55em 1.2em; border-bottom: .08em solid #e4e4e4; opacity: .35; transition: opacity .3s; }
+#ticks .row.ok { opacity: 1; }
+#ticks .row b { font-size: 1.8em; text-transform: uppercase; }
+#ticks .row small { grid-column: 1; font-size: 1.2em; color: var(--grey); }
+#ticks .row i { grid-row: 1 / span 2; grid-column: 2; align-self: center; width: 2.2em; height: 2.2em; border-radius: 50%; background: #ddd; position: relative; }
+#ticks .row.ok i { background: #2c9a4a; }
+#ticks .row.ok i::after { content: ''; position: absolute; left: .75em; top: .35em; width: .55em; height: 1.1em; border: solid #fff; border-width: 0 .25em .25em 0; transform: rotate(45deg); }
+#ticks .ft { padding: .6em 1.2em; font-size: 2em; font-weight: 700; text-transform: uppercase; text-align: center; background: #e9e9e9; color: #9a9a9a; transition: background .3s, color .3s; }
+#ticks .ft.ok { background: #2c9a4a; color: #fff; }
+#end .ask { font-size: 2.2em; font-weight: 700; color: var(--blue); text-transform: uppercase; letter-spacing: .08em; opacity: 0; }
+#stage.portrait #weigh { top: 5%; }
+#stage.portrait #weigh .wc { max-width: 92%; padding: .9em 1em; }
+#stage.portrait #weigh .ws { gap: .8em; }
+#stage.portrait #weigh .ws span { font-size: 2em; }
+#stage.portrait #weigh .wl { font-size: 1.9em; }
+#stage.portrait #ticks { left: 5%; right: 5%; top: 4%; width: auto; font-size: 1.3em; }
+#stage.portrait #end p { font-size: 2.2em; text-align: center; padding: 0 6%; }

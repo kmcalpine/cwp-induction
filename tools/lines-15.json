@@ -1,0 +1,12 @@
+{
+  "out": "audio-15",
+  "lines": [
+    { "file": "01.mp3", "text": "Before we finish, I want to make one thing clear." },
+    { "file": "02.mp3", "text": "No programme, deadline, or job, is more important than somebody's safety." },
+    { "file": "03.mp3", "text": "If you don't understand the task, haven't been briefed, don't have the correct equipment, or think something isn't safe... don't carry on, and hope for the best." },
+    { "file": "04.mp3", "text": "Stop, and speak to your supervisor." },
+    { "file": "05.mp3", "text": "We expect everyone working for C.W.P. to look after themselves, and the people around them." },
+    { "file": "06.mp3", "text": "If we all follow the correct procedures, communicate properly, and deal with problems when they arise, we can get the job done safely." },
+    { "file": "07.mp3", "text": "Has anyone got any questions, before we go through the site-specific arrangements?" }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "out": "audio-10",
+  "lines": [
+    { "file": "01.mp3", "text": "Dust, noise, vibration, and hazardous substances." },
+    { "file": "02.mp3", "text": "Some of our activities create dust, noise, and vibration." },
+    { "file": "03.mp3", "text": "And we may use products such as fuels, oils, cement, resins, and other chemicals." },
+    { "file": "04.mp3", "text": "You must follow the relevant COSHH assessment, and use the required control measures." },
+    { "file": "05.mp3", "text": "Where dust is generated, suitable extraction or suppression must be used." },
+    { "file": "06.mp3", "text": "Respiratory protection must be suitable for the task, and tight-fitting masks require face-fit testing." },
+    { "file": "07.mp3", "text": "Exposure to noisy equipment and vibrating tools must be controlled." },
+    { "file": "08.mp3", "text": "Wet concrete and cement can cause serious chemical burns, so suitable gloves, footwear, and washing arrangements are essential." },
+    { "file": "09.mp3", "text": "Do not use chemicals or unfamiliar products without the necessary information and instruction." },
+    { "file": "10.mp3", "text": "Control the dust. Protect your lungs, ears, and skin. Know what you're using." }
+  ]
+}

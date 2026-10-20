@@ -55,13 +55,19 @@ const CHIPS = [
 // blockwork building with a tube-and-fitting scaffold along its front; damaged kit in a quarantine bay;
 // the manhole and an open valve chamber by the tank
 const BLD = { x: 9, y: .8, w: 7, d: 4, h: 3.9 }, SC = { x0: 9, x1: 15, yi: 4.95, lifts: [1.9, 3.7] }, YO = SC.yi + 1.3, TOPZ = SC.lifts[1];
-const BAD_TOWER = [21, -2.4], QBAY = [18, 23, -2.5, .2];
+// laid out left to right in the order the voiceover visits them, so the camera only travels one way:
+// scaffold → quarantine bay (ladder, tower, scaffold fittings) → formwork platform → manhole → chamber → tank → wet well
+const BAD_TOWER = [20.6, -2.4], QBAY = [18, 26, -2.5, .2], FITTINGS = [23.6, -1.4];
 const LADDER = [19.2, -1.3, 19.2, -2.45, 2];
-const MH = [20.2, 7];                                                        // the manhole
-const CHAMBER = [24.6, 25.6, 6.6, 7.6];                                      // open valve chamber
-const KIOSK_TAG = [23.5, 5.71, 1.1];
+const FORM = { x0: 28, x1: 32.2, y: .6, h: 2.6 }, DECK = FORM.h - 1.1, YP = FORM.y + .3 + .85;
+const MH0 = [33, 7.4];                                                       // a manhole
+const CHAMBER = [37.2, 38.2, 6.6, 7.6];                                      // open valve chamber
+const MH = [48.6, 6.8];                                                      // the wet well: the space that's entered
+const KIOSK_TAG = [50.7, 4.51, 1.1];
 const PLAN_AT = [5.85, 6.85, 8.7];                                           // planned · access equipment · fall protection
-const BAD_AT = [11.6, 14, 15.4], RAIL_AT = 19.4, RAIL_BACK = 21.8;
+const BAD_AT = [11.6, 13.7, 14.6], RAIL_AT = 19.4, FORM_X = 30;
+// with the rail out he steps to the open edge and falls; reset once the camera has moved on
+const STEP_AT = 20, FALL_AT = 20.6, LAND_AT = 21.15, FALL_RESET = 30.8;
 const TYPE_AT = [25.25, 26.45, 27.2, 27.8];                                  // manholes · chambers · tanks · wet wells
 const CS_AT = [30.6, 34.8, 36.4, 38.2, 39.8, 41.2];
 const RESCUE_AT = 44, IN_AT = 47.6, COLLAPSE_AT = 49.2, RUSH_STOP = 50.8, WINCH_AT = 51.6, OUT_AT = 54;
@@ -72,25 +78,44 @@ function entrantAt(t) {
   if (t < WINCH_AT) return { x: MH[0], y: MH[1], z: -2 * ramp(t, IN_AT, IN_AT + 1.1) };
   return { x: MH[0], y: MH[1], z: -2 * (1 - ramp(t, WINCH_AT, OUT_AT)) };
 }
+function fallAt(t) {
+  // on the deck → steps forward through the gap → falls, tipping head-first → lies on the ground
+  if (t < STEP_AT || t >= FALL_RESET) return { y: YP - .4, z: DECK, rot: 0 };
+  if (t < FALL_AT) return { y: lerp(YP - .4, YP - .02, ramp(t, STEP_AT, FALL_AT)), z: DECK, rot: 0, moving: true };
+  const u = ramp(t, FALL_AT, LAND_AT);
+  return { y: lerp(YP - .02, YP + .7, u), z: DECK * (1 - u * u), rot: -112 * Math.min(1, u * 1.15) };   // tips away from the access ladder
+}
 function rusherAt(t) {
   // a colleague starts towards the shaft, stops at the barrier, steps back
-  return walkPath([[48.6, 16.4, 9.6], [RUSH_STOP - .2, 18.4, 8.2], [52.4, 18.4, 8.2], [54, 17, 9.4]], t);
+  return walkPath([[48.6, MH[0] - 3.8, 9.6], [RUSH_STOP - .2, MH[0] - 1.8, 8.2], [52.4, MH[0] - 1.8, 8.2], [54, MH[0] - 3.2, 9.4]], t);
 }
 function cameraAt(t) {
+  // mobile: step to each confined space as it's named, instead of one wide shot
+  const f = MOBILE && focusSeq(t, 24.6, 29.9, [
+    [24.6, () => [MH0[0], MH0[1], .8], 520],
+    [TYPE_AT[0] - .35, () => [MH0[0], MH0[1], .6], 400],
+    [TYPE_AT[1] - .35, () => [(CHAMBER[0] + CHAMBER[1]) / 2, (CHAMBER[2] + CHAMBER[3]) / 2, .6], 400],
+    [TYPE_AT[2] - .35, () => [42, 2.6, 1.6], 560],
+    [TYPE_AT[3] - .2, () => [MH[0], MH[1], .6], 420],
+  ]);
+  if (f) return f;
   const c = (x, y, z, w) => { const [px, py] = P(x, y, z); return { x: px, y: py, w }; };
+  // every move between areas is a steady, constant-speed pan ('lin'), always left to right
   const keys = [
-    [0, c(12, 4, 1, 900)], [4.4, c(12.6, 5.2, 2.4, 520)], [11, c(12.8, 5.2, 2.4, 500)],
-    [11.6, c(20.2, -1.2, 1, 460)], [15.2, c(20.4, -1.2, 1, 450)],
-    [15.4, c(12.6, 5.2, 2.4, 520)], [23.2, c(12.6, 5.2, 2.6, 490)],
-    [23.8, c(22.6, 4.6, 1, 760)], [30.2, c(22.6, 4.6, 1, 730)],
-    [30.6, MOBILE ? c(20.4, 6.9, 1, 420) : c(21.6, 6.3, 1, 640)], [43.6, MOBILE ? c(20.4, 6.9, 1, 410) : c(21.6, 6.3, 1, 620)],
-    [44, c(20.4, 7.1, 1, 440)], [47.6, c(20.4, 7.1, 1, 430)],
-    [48.2, c(19.6, 7.5, .8, 520)], [55, c(19.8, 7.5, .8, 500)],
-    [55.6, c(12, 4, 1, 900)], [63, c(13, 4, 1, 880)],
+    [0, c(22, 4, 1, 1500)], [4.4, c(12.6, 5.2, 2.4, 520)], [11, c(12.8, 5.2, 2.4, 500)],
+    [11.8, c(19.4, -1.2, 1, 460), 'lin'], [13.4, c(19.6, -1.2, 1, 460)],
+    [13.9, c(21.4, -1.2, 1, 460), 'lin'], [14.3, c(21.6, -1.2, 1, 460)],
+    [14.8, c(23.6, -1.2, .6, 440), 'lin'], [17.2, c(23.8, -1.2, .6, 440)],
+    [18, c(FORM_X, 2.2, 1.4, 500), 'lin'], [23, c(FORM_X + .2, 2.2, 1.6, 480)],
+    [24.6, MOBILE ? c(MH0[0], MH0[1], .8, 520) : c(41, 5, 1, 1100), 'lin'], [29.9, MOBILE ? c(MH[0], MH[1], .6, 420) : c(41.2, 5, 1, 1060)],
+    [31.1, MOBILE ? c(MH[0], MH[1] - .1, 1, 420) : c(49.6, 6.1, 1, 640), 'lin'], [43.6, MOBILE ? c(MH[0], MH[1] - .1, 1, 410) : c(49.6, 6.1, 1, 620)],
+    [44, c(MH[0], MH[1] + .1, 1, 440)], [47.6, c(MH[0], MH[1] + .1, 1, 430)],
+    [48.2, c(MH[0] - .6, MH[1] + .5, .8, 520)], [55, c(MH[0] - .4, MH[1] + .5, .8, 500)],
+    [55.6, c(22, 4, 1, 1500)], [63, c(23, 4, 1, 1480)],
   ];
   for (let i = 0; i < keys.length - 1; i++) {
-    const [t0, a] = keys[i], [t1, b] = keys[i + 1];
-    if (t <= t1) { const u = t1 - t0 < .2 ? 1 : smooth((t - t0) / (t1 - t0)); return { x: lerp(a.x, b.x, u), y: lerp(a.y, b.y, u), w: lerp(a.w, b.w, u) }; }
+    const [t0, a] = keys[i], [t1, b, mode] = keys[i + 1];
+    if (t <= t1) { const u = t1 - t0 < .2 ? 1 : mode === 'lin' ? clamp((t - t0) / (t1 - t0)) : smooth((t - t0) / (t1 - t0)); return { x: lerp(a.x, b.x, u), y: lerp(a.y, b.y, u), w: lerp(a.w, b.w, u) }; }
   }
   return keys[keys.length - 1][1];
 }
@@ -114,9 +139,10 @@ function audioUpdate(F) {
 const VO = [
   [.6, 0, 0, null, 'Working at height, and confined spaces.'],
   [4.4, 1, 0, null, 'Work at height must be properly planned, with the right access equipment, and protection against falls.'],
-  [11.6, 2, 0, null, 'Never use damaged ladders,'],
-  [14, 3, 0, null, 'towers,'],
-  [15.4, 4, 0, null, 'or scaffolds.'],
+  // one take (clip 17), split at its pauses so each item lands on its picture
+  [11.6, 16, 0, 1.83, 'Never use damaged ladders,'],
+  [13.7, 16, 1.83, 2.52, 'towers,'],
+  [14.6, 16, 2.52, null, 'or scaffolds.'],
   [17.6, 5, 0, null, 'And never remove edge protection, or alter scaffolding, without authorisation.'],
   [23.8, 6, 0, null, 'Confined spaces, like manholes, chambers, tanks, and wet wells, can kill.'],
   [30.6, 7, 0, null, 'No one enters a confined space without the assessment,'],
@@ -153,26 +179,43 @@ function render(t) {
   for (const p of CREW) items.push({ k: p.at[0] + p.at[1], s: person({ x: p.at[0], y: p.at[1], dir: p.dir || 1, tool: 'carry', carrying: [], skin: p.skin, t }) });
 
   // working at height: building, scaffold (back layer, then the bricklayer, then guardrails), with a rail out while it's tampered with
-  const railOff = t >= RAIL_AT && t < RAIL_BACK;
+  const railOff = t >= RAIL_AT && t < FALL_RESET;
   items.push({ k: BLD.x + BLD.w / 2 + BLD.y + BLD.d / 2, bb: [BLD.x, BLD.x + BLD.w, BLD.y, BLD.y + BLD.d], s: blockBuilding(BLD.x, BLD.y, BLD.w, BLD.d, BLD.h) });
   items.push({ k: 12 + SC.yi + .3, bb: [SC.x0, SC.x1, SC.yi, YO - .4], s: tubeScaffold(SC.x0, SC.x1, SC.yi, SC.lifts, { part: 'back' }) });
-  items.push({ k: 12 + YO, bb: [SC.x0, SC.x1 + .7, YO - .05, YO + .05], s: tubeScaffold(SC.x0, SC.x1, SC.yi, SC.lifts, { part: 'front', railOff }) });
-  items.push({ k: 12.4 + SC.yi + .5, s: person({ x: 12.4, y: SC.yi + .5, z: TOPZ, dir: -1, work: !railOff, seed: 1, raise: ramp(t, RAIL_AT - .5, RAIL_AT) * (1 - ramp(t, RAIL_AT + .2, RAIL_AT + .5)) * .6, skin: SKINS[2], t }) });
+  items.push({ k: 12 + YO, bb: [SC.x0, SC.x1 + .7, YO - .05, YO + .05], s: tubeScaffold(SC.x0, SC.x1, SC.yi, SC.lifts, { part: 'front' }) });
+  items.push({ k: (FORM.x0 + FORM.x1) / 2 + FORM.y, bb: [FORM.x0, FORM.x1, FORM.y, YP - .5], s: wallFormwork(FORM.x0, FORM.x1, FORM.y, FORM.h, { railOff, part: 'back' }) });
+  items.push({ k: (FORM.x0 + FORM.x1) / 2 + YP, bb: [FORM.x0, FORM.x1, YP - .05, YP + .05], s: wallFormwork(FORM.x0, FORM.x1, FORM.y, FORM.h, { railOff, part: 'front' }) });
+  items.push({ k: FORM.x1 - .5 + YP + .6, bb: [FORM.x1 - .8, FORM.x1 - .2, YP, YP + 1.1], s: leaningLadder(FORM.x1 - .5, YP + 1.1, FORM.x1 - .5, YP - .05, DECK + 1) });
+  {
+    // the formwork hand: takes the rail out, steps to the open edge, falls to the ground
+    const f = fallAt(t), body = person({ x: FORM_X, y: f.y, z: f.z, dir: 1, work: !railOff && f.rot === 0 && f.y < YP - .3, moving: f.moving, phase: t * 9, seed: 3, raise: ramp(t, RAIL_AT - .5, RAIL_AT) * (1 - ramp(t, RAIL_AT + .2, RAIL_AT + .5)) * .6, skin: SKINS[4], t });
+    let s = body;
+    if (f.rot) {
+      const [px, py] = P(FORM_X, f.y, f.z), [gx, gy] = P(FORM_X, f.y, 0), r = f.rot * Math.PI / 180, lay = f.z < .1 ? .42 * 1.8 * S : 0;
+      s = `<ellipse cx="${f1(gx + Math.sin(r) * lay)}" cy="${f1(gy - Math.cos(r) * lay + 1)}" rx="${f1(lay ? 30 : 10)}" ry="${f1(lay ? 7 : 3.2)}" fill="#2a2010" opacity=".33"/><g transform="rotate(${f1(f.rot)} ${f1(px)} ${f1(py)})">${body.replace(/<ellipse[^>]*opacity="\.33"\/>/, '')}</g>`;
+    }
+    items.push({ k: FORM_X + f.y + (f.y > YP ? .3 : -.2), s });
+  }
+  items.push({ k: 12.4 + SC.yi + .5, s: person({ x: 12.4, y: SC.yi + .5, z: TOPZ, dir: -1, work: true, seed: 1, skin: SKINS[2], t }) });
   // open valve chamber with its cover aside, behind barriers
+  items.push({ k: -45, bb: [MH0[0] - .6, MH0[0] + .6, MH0[1] - .6, MH0[1] + .6], s: poly(isoCircle(MH0[0], MH0[1], .55, .015, 20), '#5c5f62', 'stroke="#2c2c2c" stroke-width="1"') + poly(isoCircle(MH0[0], MH0[1], .38, .02, 20), 'none', 'stroke="#3a3a3a" stroke-width="1"') });
+  items.push({ k: -44, bb: [MH[0] - 1.1, MH[0] + 1.1, MH[1] - 1.1, MH[1] + 1.1], s: box(MH[0] - 1.1, MH[1] - 1.1, 0, 2.2, 2.2, .25, '#a7a39b') });
   items.push({ k: -40, bb: CHAMBER, s: pit('valvech', ...CHAMBER, 1.3) + poly(isoCircle(CHAMBER[1] + .6, CHAMBER[2] + .3, .4, .02, 16), '#5c5f62') });
-  for (const [a2, b2] of [[[24.3, 8], [26.1, 8]], [[26.1, 6.3], [26.1, 8]]]) items.push({ k: (a2[0] + b2[0]) / 2 + (a2[1] + b2[1]) / 2, bb: [Math.min(a2[0], b2[0]) - .1, Math.max(a2[0], b2[0]) + .1, Math.min(a2[1], b2[1]) - .1, Math.max(a2[1], b2[1]) + .1], s: barrier(a2, b2) });
+  for (const [a2, b2] of [[[CHAMBER[0] - .3, 8], [CHAMBER[1] + .5, 8]], [[CHAMBER[1] + .5, 6.3], [CHAMBER[1] + .5, 8]]]) items.push({ k: (a2[0] + b2[0]) / 2 + (a2[1] + b2[1]) / 2, bb: [Math.min(a2[0], b2[0]) - .1, Math.max(a2[0], b2[0]) + .1, Math.min(a2[1], b2[1]) - .1, Math.max(a2[1], b2[1]) + .1], s: barrier(a2, b2) });
   // damaged access equipment, tagged out
-  items.push({ k: 19.2 - 1.9, bb: [18.9, 19.5, -2.5, -1.2], s: leaningLadder(...LADDER, { damaged: true }) + defectTag(19.2, -1.7, 1.1) });
+  items.push({ k: 19.2 - 1.9, bb: [18.9, 19.5, -2.5, -1.2], s: leaningLadder(...LADDER, { damaged: true }) });
   // quarantine bay: barriers and a sign
   items.push({ k: QBAY[0] + QBAY[3], bb: [QBAY[0] - .1, QBAY[0] + .1, QBAY[2], QBAY[3]], s: barrier([QBAY[0], QBAY[2]], [QBAY[0], QBAY[3]]) });
   for (let x = QBAY[0]; x < QBAY[1] - .1; x += 2) items.push({ k: x + 1 + QBAY[3], bb: [x, x + 2, QBAY[3] - .1, QBAY[3] + .1], s: barrier([x, QBAY[3]], [Math.min(x + 2, QBAY[1]), QBAY[3]]) });
-  items.push({ k: 22.4 + .3, bb: [22.2, 23.2, .25, .35], s: signXZ(22.1, .3, 1.75, 1.3, .55, `<rect width="1.3" height=".55" fill="#d42a20"/><text x=".65" y=".22" font-size=".15" font-family="Arial" font-weight="700" text-anchor="middle" fill="#fff">DEFECTIVE EQUIPMENT</text><text x=".65" y=".43" font-size=".15" font-family="Arial" font-weight="700" text-anchor="middle" fill="#fff">DO NOT USE</text>`) + line3([22.75, .3, 0], [22.75, .3, 1.2], '#7d7d7d', 2) });
-  items.push({ k: BAD_TOWER[0] + .7 + BAD_TOWER[1] + 1.2, bb: [BAD_TOWER[0], BAD_TOWER[0] + 1.4, BAD_TOWER[1], BAD_TOWER[1] + 2.4], s: scaffoldTower(...BAD_TOWER, 1, { damaged: true }) + defectTag(BAD_TOWER[0] + 1.4, BAD_TOWER[1] + 1.2, 1) });
+  items.push({ k: 25.4 + .3, bb: [25.2, 26.2, .25, .35], s: signXZ(25.1, .3, 1.75, 1.3, .55, `<rect width="1.3" height=".55" fill="#d42a20" stroke="#fff" stroke-width=".03"/><text x=".65" y=".23" font-size=".14" font-family="Arial" font-weight="700" text-anchor="middle" fill="#fff" textLength="1.12" lengthAdjust="spacingAndGlyphs">DEFECTIVE EQUIPMENT</text><text x=".65" y=".44" font-size=".14" font-family="Arial" font-weight="700" text-anchor="middle" fill="#fff" textLength=".8" lengthAdjust="spacingAndGlyphs">DO NOT USE</text>`) + line3([25.75, .3, 0], [25.75, .3, 1.2], '#7d7d7d', 2) });
+  // damaged scaffold fittings: a bundle of tubes, one bent, and loose couplers
+  items.push({ k: FITTINGS[0] + FITTINGS[1], bb: [FITTINGS[0] - 1.1, FITTINGS[0] + 1.1, FITTINGS[1] - .4, FITTINGS[1] + .4], s: [-.2, 0, .2].map((dy, i) => line3([FITTINGS[0] - 1.1, FITTINGS[1] + dy, .08 + i % 2 * .1], [FITTINGS[0] + 1.1, FITTINGS[1] + dy, .08 + i % 2 * .1], '#9aa2a8', 3.4)).join('') + `<path d="M${pts([[FITTINGS[0] - 1, FITTINGS[1] + .45, .1]])} Q${pts([[FITTINGS[0], FITTINGS[1] + .45, .7]])} ${pts([[FITTINGS[0] + 1, FITTINGS[1] + .6, .1]])}" stroke="#9aa2a8" stroke-width="3.4" fill="none"/>`.replace(/(-?\d+\.\d+),(-?\d+\.\d+)/g, '$1 $2') + box(FITTINGS[0] + .3, FITTINGS[1] - .5, 0, .18, .14, .1, '#6c7277') + box(FITTINGS[0] + .6, FITTINGS[1] - .45, 0, .18, .14, .1, '#6c7277') });
+  items.push({ k: BAD_TOWER[0] + .7 + BAD_TOWER[1] + 1.2, bb: [BAD_TOWER[0], BAD_TOWER[0] + 1.4, BAD_TOWER[1], BAD_TOWER[1] + 2.4], s: scaffoldTower(...BAD_TOWER, 1, { damaged: true }) });
   // confined space: barriers, permit board, isolation lock on the kiosk, tripod once rescue is planned
-  for (const [a, b] of [[[18.8, 5.8], [20.8, 5.8]], [[18.8, 5.8], [18.8, 7.8]]]) items.push({ k: (a[0] + b[0]) / 2 + (a[1] + b[1]) / 2, bb: [Math.min(a[0], b[0]) - .1, Math.max(a[0], b[0]) + .1, Math.min(a[1], b[1]) - .1, Math.max(a[1], b[1]) + .1], s: barrier(a, b) });
-  items.push({ k: 18 + 6.4, bb: [17.4, 18.7, 6.3, 6.5], s: permitBoard(17.4, 6.4) });
+  for (const [a, b] of [[[MH[0] - 1.5, MH[1] - 1.3], [MH[0] + .5, MH[1] - 1.3]], [[MH[0] - 1.5, MH[1] - 1.3], [MH[0] - 1.5, MH[1] + .7]]]) items.push({ k: (a[0] + b[0]) / 2 + (a[1] + b[1]) / 2, bb: [Math.min(a[0], b[0]) - .1, Math.max(a[0], b[0]) + .1, Math.min(a[1], b[1]) - .1, Math.max(a[1], b[1]) + .1], s: barrier(a, b) });
+  items.push({ k: MH[0] - 2.8 + MH[1] - .5, bb: [MH[0] - 3.4, MH[0] - 2.1, MH[1] - .6, MH[1] - .4], s: permitBoard(MH[0] - 3.4, MH[1] - .5) });
   const ent = entrantAt(t);
-  items.push({ k: MH[0] + MH[1] - .5, bb: [MH[0] - .6, MH[0] + 1.6, MH[1] - .9, MH[1] + .6], s: manholeEntry(...MH, t, { tripod: t >= CS_AT[5], lineZ: t >= IN_AT ? ent.z + 1.4 : -.6 }) });
+  items.push({ k: MH[0] + MH[1] - .3, bb: [MH[0] - .6, MH[0] + 1.6, MH[1] - .9, MH[1] + .6], s: manholeEntry(...MH, t, { tripod: t >= CS_AT[5], lineZ: t >= IN_AT ? ent.z + 1.4 : -.6 }) });
   // the entrant, shown only above the rim while in the shaft
   {
     const [ox, oy] = P(MH[0], MH[1], 0), r = .42 * S;
@@ -198,27 +241,27 @@ function render(t) {
   fx += tag(SC.x1 + .4, YO, 1.2, 'Right access equipment', '#2c9a4a', ramp(t, PLAN_AT[1], PLAN_AT[1] + .3) * o11, fs * .9);
   fx += tag(SC.x0 + 1, YO, TOPZ + 1.6, 'Guardrails: fall protection', '#2c9a4a', ramp(t, PLAN_AT[2], PLAN_AT[2] + .3) * o11, fs * .9);
   // damaged access equipment
-  fx += mark(19.2, -1.7, 2.4, false, ramp(t, BAD_AT[0], BAD_AT[0] + .3) * (1 - ramp(t, 16.8, 17.2))) + tag(19.2, -1.7, 3.2, 'Damaged ladder', '#e5483b', ramp(t, BAD_AT[0], BAD_AT[0] + .3) * (1 - ramp(t, 16.8, 17.2)));
-  fx += mark(BAD_TOWER[0] + .7, BAD_TOWER[1] + 1.2, 2.2, false, ramp(t, BAD_AT[1], BAD_AT[1] + .3) * (1 - ramp(t, 16.8, 17.2))) + tag(BAD_TOWER[0] + .7, BAD_TOWER[1] + 1.2, 3, 'Damaged tower', '#e5483b', ramp(t, BAD_AT[1], BAD_AT[1] + .3) * (1 - ramp(t, 16.8, 17.2)));
-  fx += tag(SC.x1, YO, 2.3, 'Scaffold inspected & tagged', '#2c9a4a', ramp(t, BAD_AT[2], BAD_AT[2] + .3) * (1 - ramp(t, 17.2, 17.5)), fs * .9);
+  fx += mark(19.2, -1.7, 2.4, false, ramp(t, BAD_AT[0], BAD_AT[0] + .3) * (1 - ramp(t, 14.2, 14.5))) + tag(19.2, -1.7, 3.2, 'Damaged ladder', '#e5483b', ramp(t, BAD_AT[0], BAD_AT[0] + .3) * (1 - ramp(t, 14.2, 14.5)));
+  fx += mark(BAD_TOWER[0] + .7, BAD_TOWER[1] + 1.2, 2.2, false, ramp(t, BAD_AT[1], BAD_AT[1] + .3) * (1 - ramp(t, 14.2, 14.5))) + tag(BAD_TOWER[0] + .7, BAD_TOWER[1] + 1.2, 3, 'Damaged tower', '#e5483b', ramp(t, BAD_AT[1], BAD_AT[1] + .3) * (1 - ramp(t, 14.2, 14.5)));
+  fx += mark(FITTINGS[0], FITTINGS[1], 1, false, ramp(t, BAD_AT[2], BAD_AT[2] + .3) * (1 - ramp(t, 17.2, 17.5))) + tag(FITTINGS[0], FITTINGS[1], 1.8, 'Damaged scaffold fittings', '#e5483b', ramp(t, BAD_AT[2], BAD_AT[2] + .3) * (1 - ramp(t, 17.2, 17.5)));
   // edge protection removed without authorisation, then put back
-  fx += mark(12, YO, TOPZ + 1.6, false, ramp(t, RAIL_AT, RAIL_AT + .3) * (1 - ramp(t, RAIL_BACK - .3, RAIL_BACK)));
-  fx += tag(12, YO, TOPZ + 2.5, 'Not authorised', '#e5483b', ramp(t, RAIL_AT, RAIL_AT + .3) * (1 - ramp(t, RAIL_BACK - .3, RAIL_BACK)));
-  fx += mark(12, YO, TOPZ + 1.6, true, ramp(t, RAIL_BACK, RAIL_BACK + .3) * (1 - ramp(t, 23, 23.3)));
-  fx += tag(12, YO, TOPZ + 2.5, 'Edge protection back in place', '#2c9a4a', ramp(t, RAIL_BACK, RAIL_BACK + .3) * (1 - ramp(t, 23, 23.3)));
+  fx += mark(FORM_X - .3, YP, DECK + 1.6, false, ramp(t, RAIL_AT, RAIL_AT + .3) * (1 - ramp(t, LAND_AT - .1, LAND_AT + .2)));
+  fx += tag(FORM_X - .3, YP, DECK + 2.5, 'Not authorised', '#e5483b', ramp(t, RAIL_AT, RAIL_AT + .3) * (1 - ramp(t, LAND_AT - .1, LAND_AT + .2)));
+  fx += tag(FORM_X - .6, YP + 1.1, .9, 'Fall from height', '#e5483b', ramp(t, LAND_AT + .1, LAND_AT + .4) * (1 - ramp(t, 23.4, 23.7)));
   // confined space types
   const o30 = 1 - ramp(t, 29.8, 30.2);
-  fx += tag(MH[0], MH[1], .5, 'Manhole', '#e07a1a', ramp(t, TYPE_AT[0], TYPE_AT[0] + .3) * o30);
-  fx += tag(25.1, 7.1, .4, 'Chamber', '#e07a1a', ramp(t, TYPE_AT[1], TYPE_AT[1] + .3) * o30);
-  fx += tag(27, 2.6, 3.2, 'Tank', '#e07a1a', ramp(t, TYPE_AT[2], TYPE_AT[2] + .3) * o30);
+  fx += tag(MH0[0], MH0[1], .6, 'Manhole', '#e07a1a', ramp(t, TYPE_AT[0], TYPE_AT[0] + .3) * o30);
+  fx += tag((CHAMBER[0] + CHAMBER[1]) / 2, 7.1, 1.5, 'Chamber', '#e07a1a', ramp(t, TYPE_AT[1], TYPE_AT[1] + .3) * o30);
+  fx += tag(42, 2.6, 3.2, 'Tank', '#e07a1a', ramp(t, TYPE_AT[2], TYPE_AT[2] + .3) * o30);
+  fx += tag(MH[0], MH[1], .9, 'Wet well', '#e07a1a', ramp(t, TYPE_AT[3], TYPE_AT[3] + .3) * o30);
   // entry controls
   const o43 = 1 - ramp(t, 43.4, 43.8);
-  fx += tag(18, 6.4, 2.5, 'Permit to enter', '#2c9a4a', ramp(t, CS_AT[1], CS_AT[1] + .3) * o43);
+  fx += tag(MH[0] - 2.8, MH[1] - .5, 2.5, 'Permit to enter', '#2c9a4a', ramp(t, CS_AT[1], CS_AT[1] + .3) * o43);
   fx += tag(topPerson.x, topPerson.y, 2.3, 'Gas: safe', '#2c9a4a', ramp(t, CS_AT[3], CS_AT[3] + .3) * o43, fs * .9);
   if (t >= CS_AT[4]) {
     const [px, py] = P(...KIOSK_TAG), a = ramp(t, CS_AT[4], CS_AT[4] + .3);
     fx += `<g opacity="${f2(a)}"><rect x="${f1(px - 7)}" y="${f1(py - 3)}" width="14" height="16" rx="1.5" fill="#d42a20" stroke="#fff" stroke-width="1"/><text x="${f1(px)}" y="${f1(py + 4.5)}" font-size="4" font-family="Arial" font-weight="700" text-anchor="middle" fill="#fff" textLength="11" lengthAdjust="spacingAndGlyphs">LOCKED</text><text x="${f1(px)}" y="${f1(py + 10)}" font-size="4" font-family="Arial" font-weight="700" text-anchor="middle" fill="#fff" textLength="11" lengthAdjust="spacingAndGlyphs">OFF</text><path d="M${f1(px - 2.5)} ${f1(py - 3)} v-3 a2.5 2.5 0 0 1 5 0 v3" stroke="#333" stroke-width="1.2" fill="none"/></g>`;
-    fx += tag(23.5, 5.7, 2.4, 'Isolated', '#2c9a4a', a * o43);
+    fx += tag(50.7, 4.5, 2.4, 'Isolated', '#2c9a4a', a * o43);
   }
   fx += tag(MH[0] + 1.6, MH[1] - 1.2, 2.7, 'Rescue tripod & winch', '#2c9a4a', ramp(t, CS_AT[5], CS_AT[5] + .3) * (1 - ramp(t, 44.6, 45)));
   // rescue: planned before entry, then the collapse
@@ -256,9 +299,10 @@ function triggers(F, P0) {
   const cross = tb => P0.t < tb && F.t >= tb;
   if (cross(1.2)) shot('whoosh');
   CHIPS.forEach(c => { if (cross(c[0])) shot('whoosh'); });
-  [...PLAN_AT, ...BAD_AT, RAIL_AT, RAIL_BACK, ...TYPE_AT.slice(0, 3), RUSH_STOP, WINCH_AT].forEach(tc => { if (cross(tc)) shot('ping'); });
+  [...PLAN_AT, ...BAD_AT, RAIL_AT, ...TYPE_AT, RUSH_STOP, WINCH_AT].forEach(tc => { if (cross(tc)) shot('ping'); });
   CS_AT.forEach(tc => { if (cross(tc)) shot('card'); });
   if (cross(COLLAPSE_AT + .4)) shot('beep');
+  if (cross(LAND_AT)) shot('thud');
   if (cross(56)) shot('chime');
   if (F.ns && P0.ns && F.ns.moving && Math.floor(F.ns.d / .7) !== Math.floor(P0.ns.d / .7)) shot('step');
   if (F.t > nextBird && F.t < 4) { shot('bird'); nextBird = F.t + .7 + Math.random() * 1.8; }

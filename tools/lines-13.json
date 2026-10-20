@@ -1,0 +1,12 @@
+{
+  "out": "audio-13",
+  "lines": [
+    {"file": "01.mp3", "text": "Accidents, near misses, and unsafe conditions."},
+    {"file": "02.mp3", "text": "All accidents, injuries, near misses, damage, and dangerous occurrences must be reported to your supervisor as soon as possible."},
+    {"file": "03.mp3", "text": "This includes incidents where nobody was injured, but somebody could have been."},
+    {"file": "04.mp3", "text": "Near-miss reporting is important, because it gives us an opportunity to put things right before someone gets hurt."},
+    {"file": "05.mp3", "text": "You will not be criticised for raising a genuine safety concern."},
+    {"file": "06.mp3", "text": "If something is unsafe, stop the activity, make the area safe where you can do so without putting yourself at risk, and report it."},
+    {"file": "07.mp3", "text": "See it. Make it safe. Report it."}
+  ]
+}

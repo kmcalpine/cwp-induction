@@ -1,0 +1,14 @@
+/* 11-environment: the reporting checklist. */
+#rcard { inset: auto; left: auto; right: 4%; top: 8%; width: 36%; height: auto; opacity: 0; pointer-events: none; }
+#rcard .oc { background: #fff; color: var(--ink); border-radius: .45em; overflow: hidden; box-shadow: 0 1em 2.4em rgba(0,0,0,.5); }
+#rcard .hd { background: var(--ink); display: flex; align-items: center; gap: 1em; padding: .8em 1.2em; border-bottom: .3em solid var(--blue); }
+#rcard .hd img { height: 2.8em; background: #fff; padding: .3em .5em; border-radius: .2em; }
+#rcard .hd span { color: #fff; font-size: 2.1em; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; }
+#rcard .row { display: grid; grid-template-columns: 1fr auto; padding: .45em 1.2em; border-bottom: .08em solid #e4e4e4; opacity: .35; transition: opacity .3s; }
+#rcard .row.ok { opacity: 1; }
+#rcard .row b { font-size: 1.8em; text-transform: uppercase; }
+#rcard .row small { grid-column: 1; font-size: 1.2em; color: var(--grey); }
+#rcard .row i { grid-row: 1 / span 2; grid-column: 2; align-self: center; width: 2.2em; height: 2.2em; border-radius: 50%; background: #ddd; position: relative; }
+#rcard .row.ok i { background: #2c9a4a; }
+#rcard .row.ok i::after { content: ''; position: absolute; left: .75em; top: .35em; width: .55em; height: 1.1em; border: solid #fff; border-width: 0 .25em .25em 0; transform: rotate(45deg); }
+#stage.portrait #rcard { left: 5%; right: 5%; top: 4%; width: auto; font-size: 1.3em; }
