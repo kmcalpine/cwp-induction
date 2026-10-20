@@ -67,7 +67,7 @@ const CHIPS = [
   [44, 48.2, 'Additional PPE', 'Lifejacket when working near water'],
   [55.8, 62.8, 'Damaged, unsuitable or missing?', 'Tell your supervisor before you start work'],
 ];
-// the kit-up: the new starter at the PPE store, each item going on as it's named
+// the kit-up: the new starter by the cabins, each item going on as it's named
 const KIT_SPOT = [1.6, 2.5];
 const KIT = [
   // [kit key, time it goes on, label, body point [z, side], label side]
@@ -89,21 +89,13 @@ const CARD_AT = [49.95, 51.85, 52.95];
 const HOC_AT = 63.6, PPE_AT = 64.4, SAFE_AT = 67.4;
 
 function starterAt(t) {
-  // walks in from the gate to the PPE store
+  // walks in from the gate to the cabins
   return walkPath([[0, 3.3, 10.6], [1.4, 3.3, 9.4], [6.6, KIT_SPOT[0], KIT_SPOT[1]]], t) || { x: 3.3, y: 10.6, moving: false, dir: 1, phase: 0 };
 }
 function dumperAt(t) {
   const a = 6, b = 40, v = 3.2, per = 2 * (b - a) / v;
   const u = frac((t + 4) / per) * per, half = per / 2;
   return u < half ? { x: a + v * u, dir: 1 } : { x: b - v * (u - half), dir: -1 };
-}
-function ppeStore() {
-  // blue steel cabinet in the gap between the site office and the welfare unit
-  const x = .35, y = -.7;
-  let s = box(x, y, 0, .9, 1.25, 1.95, '#2c5d95');
-  s += line3([x + .45, y + 1.26, .1], [x + .45, y + 1.26, 1.85], '#1d3f66', 1.2) + line3([x + .91, y + .1, .1], [x + .91, y + 1.15, .1], '#1d3f66', 1);
-  s += signXZ(x + .1, y + 1.27, 1.7, .7, .3, `<rect width=".7" height=".28" fill="#fff"/><text x=".35" y=".21" font-size=".18" font-family="Arial" font-weight="700" text-anchor="middle" fill="#2c5d95">PPE</text>`);
-  return s;
 }
 function brokenSlab() {
   let s = poly([[31.7, 7.05, .01], [33.1, 7.05, .01], [33.1, 7.95, .01], [31.7, 7.95, .01]], '#9c9a94');
@@ -216,7 +208,6 @@ function render(t) {
 
   const items = [];
   items.push({ k: -1.2, bb: [-5.6, -1.2, 1, 2], s: STAIR || (STAIR = stair(-5.6, -4.2, -1.2, 1, 2, 2.7)) });
-  items.push({ k: .3, bb: [.35, 1.25, -.7, .55], s: ppeStore() });
   items.push({ k: 21, s: excavator(8, excavatorPose(t), t) });
   const d = dumperAt(t); items.push({ k: d.x + 1.8 + 9.6, s: dumper(d.x, 8.7, d.dir, t) });
   items.push({ k: 58, s: mixer(44.6, 8.75, t) });
@@ -226,7 +217,7 @@ function render(t) {
   const cu = frac(t / 9), cx = cu < .5 ? lerp(33.4, 39.6, cu * 2) : lerp(39.6, 33.4, (cu - .5) * 2);
   items.push({ k: cx + 3.2, s: person({ x: cx, y: 3.2, moving: true, phase: t * 4.5, dir: cu < .5 ? 1 : -1, tool: 'cat', t }) });
 
-  // 1-2 · the new starter walks in, then kits up at the PPE store
+  // 1-2 · the new starter walks in, then kits up by the cabins
   const ns = starterAt(t);
   if (t < 28.4) {
     const kit = Object.fromEntries(KIT.map(([k, at]) => [k, t >= at]));
