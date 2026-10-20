@@ -50,6 +50,7 @@ const HW = { x0: 24.4, x1: 27.8, y: 3.6 }, PERMIT = [22.8, 4.9];
 const STORE = [34, 1.4, 3, 1.4, 2.5], STEP = [35.6, 3.45];
 const AID = [44, 7.5];                                  // first aid point
 // timings
+const ALARM_LEN = 3;                                                          // seconds the alarm sounds
 const IGNITE = 2, DISCOVER = 4, ALARM_AT = 6, EVAC_AT = 7.7, SPRAY = [12.4, 16.2];
 const TRAINED_AT = 13.2, SAFE_AT = 14.4, ESCAPE_AT = 15.9;
 const EXIT_AT = 20.9, ASM_AT = 21.8, FFE_AT = 22.9, SWAP = 25.6, CLEAR = 32.5;
@@ -259,12 +260,12 @@ function audioUpdate(F) {
   A.voices.forEach((pair, i) => pair.forEach(o => o.frequency.setTargetAtTime(mtof(chord[i]), n, .25)));
 }
 // this section's own sounds: the site fire alarm (a sounder) and the extinguisher's hiss
-function sfx(kind) {
+function sfx(kind, vol = 1) {
   const ctx = A.ctx; if (!ctx) return;
   const t = ctx.currentTime, g = ctx.createGain(); g.connect(A.out);
   if (kind === 'sounder') {
-    const o = ctx.createOscillator(); o.type = 'square'; o.frequency.setValueAtTime(960, t); o.frequency.setValueAtTime(760, t + .2);
-    g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(.022, t + .01); g.gain.setValueAtTime(.022, t + .38); g.gain.linearRampToValueAtTime(0, t + .4);
+    const o = ctx.createOscillator(); o.type = 'triangle'; o.frequency.setValueAtTime(960, t); o.frequency.setValueAtTime(760, t + .2);
+    g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(.05 * vol, t + .01); g.gain.setValueAtTime(.05 * vol, t + .38); g.gain.linearRampToValueAtTime(0, t + .4);
     o.connect(g); o.start(t); o.stop(t + .42);
   }
   if (kind === 'hiss') {
@@ -433,8 +434,8 @@ function triggers(F, P0) {
   if (cross(LAND_AT)) shot('thud');
   if (nextSounder > F.t + 1) nextSounder = 0;   // after a seek back
   if (nextHiss > F.t + 1) nextHiss = 0;
-  // the fire alarm sounds from the call point until everyone is out
-  if (F.t >= ALARM_AT && F.t < SWAP - .4 && F.t >= nextSounder) { sfx('sounder'); nextSounder = F.t + .42; }
+  // the fire alarm: a short burst when the call point is hit, fading under the voiceover
+  if (F.t >= ALARM_AT && F.t < ALARM_AT + ALARM_LEN && F.t >= nextSounder) { sfx('sounder', 1 - ramp(F.t, ALARM_AT + ALARM_LEN - 1.2, ALARM_AT + ALARM_LEN)); nextSounder = F.t + .42; }
   if (F.t >= SPRAY[0] && F.t < SPRAY[1] && F.t >= nextHiss) { sfx('hiss'); nextHiss = F.t + .3; }
   if (cross(53)) shot('chime');
   if (F.ns && P0.ns && F.ns.moving && Math.floor(F.ns.d / .7) !== Math.floor(P0.ns.d / .7)) shot('step');
